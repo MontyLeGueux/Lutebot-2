@@ -4,8 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Lutebot_2.Controller
+namespace Lutebot.Controller
 {
+    /// <summary>
+    /// Manage incomming note events, adapt them to the game and play them using a keyboardOutput object.
+    /// </summary>
     class MordhauController
     {
     }

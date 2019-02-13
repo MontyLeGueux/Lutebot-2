@@ -55,6 +55,7 @@
     <Compile Include="Controller\MordhauController.cs" />
     <Compile Include="Controller\SoundEffectController.cs" />
     <Compile Include="Core\Abc\AbcPlayer.cs" />
+    <Compile Include="Core\Midi\MidiPlayer.cs" />
     <Compile Include="Core\LutebotException.cs" />
     <Compile Include="Core\Music.cs" />
     <Compile Include="Reader\Abc\AbcParsingException.cs" />
@@ -69,11 +70,6 @@
     <Compile Include="Logger\GlobalLogger.cs" />
     <Compile Include="Logger\LoggerEvent.cs" />
     <Compile Include="Logger\LoggerManager.cs" />
-    <Compile Include="OnlineSync\AsynchronousClient.cs" />
-    <Compile Include="OnlineSync\AsynchronousSocketListener.cs" />
-    <Compile Include="OnlineSync\OnlineSyncManager.cs" />
-    <Compile Include="OnlineSync\Party.cs" />
-    <Compile Include="OnlineSync\PlayerProfile.cs" />
     <Compile Include="Playlist\PlayList.cs" />
     <Compile Include="Playlist\PlayListEventArgs.cs" />
     <Compile Include="Playlist\PlayListItem.cs" />
@@ -105,12 +101,6 @@
     </Compile>
     <Compile Include="UI\LuteBotForm.Designer.cs">
       <DependentUpon>LuteBotForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UI\OnlineSyncForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\OnlineSyncForm.Designer.cs">
-      <DependentUpon>OnlineSyncForm.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\PlayListForm.cs">
       <SubType>Form</SubType>
@@ -147,9 +137,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\LuteBotForm.resx">
       <DependentUpon>LuteBotForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\OnlineSyncForm.resx">
-      <DependentUpon>OnlineSyncForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\PlayListForm.resx">
       <DependentUpon>PlayListForm.cs</DependentUpon>

@@ -2,7 +2,6 @@
 using LuteBot;
 using LuteBot.IO;
 using LuteBot.Logger;
-using LuteBot.OnlineSync;
 using LuteBot.Playlist;
 using LuteBot.SoundBoard;
 using LuteBot.UI;
@@ -53,7 +52,6 @@ namespace Lutebot.UI
         LoggerManager loggerManager;
         Player player;
 
-        OnlineSyncForm onlineSyncForm;
         SoundBoardForm soundBoardForm;
         PlayListForm playListForm;
         LoggerForm loggerForm;
@@ -67,7 +65,6 @@ namespace Lutebot.UI
 
         static PlayList playList;
         static SoundBoardManager soundBoardManager;
-        static OnlineSyncManager onlineManager;
 
         bool closing = false;
 
@@ -80,7 +77,6 @@ namespace Lutebot.UI
             player = new AbcPlayer();
             player.SongLoadCompleted += new EventHandler<EventArgs>(HandleSongLoadCompleted);
 
-            onlineManager = new OnlineSyncManager();
             playList = new PlayList();
             playList.PlayListUpdatedEvent += new EventHandler<PlayListEventArgs>(HandlePlayListChanged);
             soundBoardManager = new SoundBoardManager();
@@ -129,6 +125,7 @@ namespace Lutebot.UI
 
         /// <summary>
         /// On focus of the main lutebot windows, all other opened windows get focus as well.
+        /// (Need to add a list of forms instead)
         /// </summary>
         private void LuteBotForm_Focus(object sender, EventArgs e)
         {
@@ -139,14 +136,6 @@ namespace Lutebot.UI
                     loggerForm.WindowState = FormWindowState.Normal;
                 }
                 loggerForm.Focus();
-            }
-            if (onlineSyncForm != null && !onlineSyncForm.IsDisposed)
-            {
-                if (onlineSyncForm.WindowState == FormWindowState.Minimized)
-                {
-                    onlineSyncForm.WindowState = FormWindowState.Normal;
-                }
-                onlineSyncForm.Focus();
             }
             if (soundBoardForm != null && !soundBoardForm.IsDisposed)
             {
@@ -235,11 +224,6 @@ namespace Lutebot.UI
                 playListForm.Left = coords.Y;
 
             }
-            if (configManager.GetBooleanProperty(PropertyItem.OnlineSync))
-            {
-                onlineSyncForm = new OnlineSyncForm(onlineManager);
-                onlineSyncForm.Show();
-            }
         }
 
         private void LoadFileButton_Click(object sender, EventArgs e)
@@ -324,12 +308,6 @@ namespace Lutebot.UI
             playList.Previous();
             autoplay = true;
             player.LoadSong(playList.Get(playList.CurrentTrackIndex).Path);
-        }
-
-        private void OnlineSyncToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            onlineSyncForm = new OnlineSyncForm(onlineManager);
-            onlineSyncForm.Show();
         }
 
         private void SoundBoardToolStripMenuItem_Click(object sender, EventArgs e)

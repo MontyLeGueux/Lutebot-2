@@ -4,8 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Lutebot_2.Controller
+namespace Lutebot.Controller
 {
+    /// <summary>
+    /// Manage incoming note events and play them through the system's audio output.
+    /// </summary>
     class SoundEffectController
     {
     }

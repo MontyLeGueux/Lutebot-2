@@ -41,7 +41,6 @@ namespace Lutebot.UI
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.playListToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.soundBoardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.onlineSyncToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.focusToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.MusicProgressBar = new System.Windows.Forms.TrackBar();
@@ -105,8 +104,7 @@ namespace Lutebot.UI
             // 
             this.openToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.playListToolStripMenuItem,
-            this.soundBoardToolStripMenuItem,
-            this.onlineSyncToolStripMenuItem});
+            this.soundBoardToolStripMenuItem});
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
             this.openToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.openToolStripMenuItem.Text = "Open";
@@ -124,14 +122,6 @@ namespace Lutebot.UI
             this.soundBoardToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.soundBoardToolStripMenuItem.Text = "SoundBoard";
             this.soundBoardToolStripMenuItem.Click += new System.EventHandler(this.SoundBoardToolStripMenuItem_Click);
-            // 
-            // onlineSyncToolStripMenuItem
-            // 
-            this.onlineSyncToolStripMenuItem.Enabled = false;
-            this.onlineSyncToolStripMenuItem.Name = "onlineSyncToolStripMenuItem";
-            this.onlineSyncToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.onlineSyncToolStripMenuItem.Text = "Online Sync";
-            this.onlineSyncToolStripMenuItem.Click += new System.EventHandler(this.OnlineSyncToolStripMenuItem_Click);
             // 
             // focusToolStripMenuItem
             // 
@@ -281,7 +271,6 @@ namespace Lutebot.UI
         private ToolStripMenuItem openToolStripMenuItem;
         private ToolStripMenuItem playListToolStripMenuItem;
         private ToolStripMenuItem soundBoardToolStripMenuItem;
-        private ToolStripMenuItem onlineSyncToolStripMenuItem;
         private Button LoadFileButton;
         private Label EndTimeLabel;
         private ToolStripMenuItem focusToolStripMenuItem;
