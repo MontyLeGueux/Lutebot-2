@@ -1,0 +1,16 @@
+C:\Users\Monty\Documents\programming\In progress\Lutebot 2\Lutebot 2\obj\Debug\Lutebot 2.csprojAssemblyReference.cache
+C:\Users\Monty\Documents\programming\In progress\Lutebot 2\Lutebot 2\obj\Debug\Lutebot_2.Properties.Resources.resources
+C:\Users\Monty\Documents\programming\In progress\Lutebot 2\Lutebot 2\obj\Debug\LuteBot.KeyBindingForm.resources
+C:\Users\Monty\Documents\programming\In progress\Lutebot 2\Lutebot 2\obj\Debug\LuteBot.UI.LoggerForm.resources
+C:\Users\Monty\Documents\programming\In progress\Lutebot 2\Lutebot 2\obj\Debug\LuteBot.UI.OnlineSyncForm.resources
+C:\Users\Monty\Documents\programming\In progress\Lutebot 2\Lutebot 2\obj\Debug\LuteBot.PlayListForm.resources
+C:\Users\Monty\Documents\programming\In progress\Lutebot 2\Lutebot 2\obj\Debug\LuteBot.SettingsForm.resources
+C:\Users\Monty\Documents\programming\In progress\Lutebot 2\Lutebot 2\obj\Debug\LuteBot.SoundBoardForm.resources
+C:\Users\Monty\Documents\programming\In progress\Lutebot 2\Lutebot 2\obj\Debug\Lutebot 2.csproj.GenerateResource.cache
+C:\Users\Monty\Documents\programming\In progress\Lutebot 2\Lutebot 2\obj\Debug\Lutebot 2.csproj.CoreCompileInputs.cache
+C:\Users\Monty\Documents\programming\In progress\Lutebot 2\Lutebot 2\bin\Debug\Lutebot 2.exe.config
+C:\Users\Monty\Documents\programming\In progress\Lutebot 2\Lutebot 2\bin\Debug\Lutebot 2.exe
+C:\Users\Monty\Documents\programming\In progress\Lutebot 2\Lutebot 2\bin\Debug\Lutebot 2.pdb
+C:\Users\Monty\Documents\programming\In progress\Lutebot 2\Lutebot 2\obj\Debug\Lutebot 2.exe
+C:\Users\Monty\Documents\programming\In progress\Lutebot 2\Lutebot 2\obj\Debug\Lutebot 2.pdb
+C:\Users\Monty\Documents\programming\In progress\Lutebot 2\Lutebot 2\obj\Debug\Lutebot.UI.LuteBotForm.resources
