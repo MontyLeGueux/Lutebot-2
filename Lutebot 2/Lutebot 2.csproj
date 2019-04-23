@@ -55,9 +55,7 @@
     <Compile Include="Controller\MordhauController.cs" />
     <Compile Include="Controller\SoundEffectController.cs" />
     <Compile Include="Core\LutebotException.cs" />
-    <Compile Include="Core\Music.cs" />
-    <Compile Include="Core\Note.cs" />
-    <Compile Include="Core\Track.cs" />
+    <Compile Include="Core\Midi\MidiPlayer.cs" />
     <Compile Include="Reader\Abc\AbcParsingException.cs" />
     <Compile Include="Reader\Abc\MusicElements\AbcHeader.cs" />
     <Compile Include="Reader\Abc\MusicElements\AbcItem.cs" />
@@ -160,6 +158,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="SongProfiles\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\Downloads\Sanford.Multimedia.Midi-master\Source\Sanford.Multimedia.Midi.csproj">
+      <Project>{4269C72A-8D3A-4737-8F89-72EAA33EA9E1}</Project>
+      <Name>Sanford.Multimedia.Midi</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

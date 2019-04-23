@@ -11,17 +11,17 @@ namespace Lutebot.Core
     /// </summary>
     public abstract class Player
     {
-        private bool isPlaying;
-        private Music currentMusic;
-        private int currentTimeInSeconds;
+        protected bool isPlaying;
+        protected int currentTimeInSeconds;
 
-        public bool IsPlaying { get => isPlaying;}
-        public Music CurrentMusic { get => currentMusic;}
-        public int CurrentTimeInSeconds { get => currentTimeInSeconds;}
+        public bool IsPlaying { get => isPlaying; }
+        public int CurrentTimeInSeconds { get => currentTimeInSeconds; }
 
         public event EventHandler<EventArgs> SongLoadCompleted;
 
         public event EventHandler<EventArgs> DonePlaying;
+
+        public event EventHandler<EventArgs> PlayingProgress;
 
         public abstract void Stop();
 
@@ -32,5 +32,17 @@ namespace Lutebot.Core
         public abstract void Pause();
 
         public abstract void ChangeCurrentTime(int newTimeInSecond);
+
+        public abstract void Dispose();
+
+        protected void OnLoadCompleted(object sender)
+        {
+            SongLoadCompleted.Invoke(sender, null);
+        }
+
+        protected void IsDonePlaying(object sender)
+        {
+            DonePlaying.Invoke(sender, null);
+        }
     }
 }

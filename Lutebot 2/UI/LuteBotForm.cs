@@ -17,7 +17,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
-using Lutebot.Core.Abc;
+using Lutebot.Core.Midi;
 
 namespace Lutebot.UI
 {
@@ -74,7 +74,7 @@ namespace Lutebot.UI
             loggerManager = new LoggerManager();
             configManager = new ConfigManager();
             loggerManager.IsOn = configManager.GetBooleanProperty(PropertyItem.DebugMode);
-            player = new AbcPlayer();
+            player = new MidiPlayer();
             player.SongLoadCompleted += new EventHandler<EventArgs>(HandleSongLoadCompleted);
 
             playList = new PlayList();
