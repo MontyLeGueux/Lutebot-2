@@ -11,15 +11,16 @@ namespace Lutebot.Reader
 {
     class MusicFileReader
     {
-        public static AbcMusic ReadAbcFile(string abcFileName)
+        public static Music ReadAbcFile(string abcFileName)
         {
-            AbcMusic result = null;
+            Music result = null;
+            AbcMusic abcFile;
             string content = FileIO.LoadTextFile(abcFileName);
             if (content != null)
             {
                 try
                 {
-                    result = AbcParser.ParseFile(content);
+                    abcFile = AbcParser.ParseFile(content);
                 }
                 catch (AbcParsingException e)
                 {

@@ -11,6 +11,12 @@ namespace Lutebot.Reader.Abc.MusicElements
     /// </summary>
     public class AbcHeaderItem
     {
+        private AbcHeaderItem type;
+        private string content;
+
+        public AbcHeaderItem Type { get => type; set => type = value; }
+        public string Content { get => content; set => content = value; }
+
         public enum AbcHeaderType
         {
             Area = 'A',

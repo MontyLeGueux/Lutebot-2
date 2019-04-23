@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Lutebot_2.Core;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,8 +11,10 @@ namespace Lutebot.Core
     {
         private string name;
         private int lengthInSeconds;
+        private List<Track> tracks;
 
-        public string Name { get => Name; set => Name = value; }
+        public string Name { get => name; set => name = value; }
         public int LengthInSeconds { get => lengthInSeconds; set => lengthInSeconds = value; }
+        internal List<Track> Tracks { get => tracks; set => tracks = value; }
     }
 }

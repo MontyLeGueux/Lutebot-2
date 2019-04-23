@@ -174,7 +174,7 @@ namespace Lutebot.UI
             PreviousButton.Enabled = enable;
             NextButton.Enabled = enable;
         }
-        
+
         private string FormatTimeFromSeconds(int seconds)
         {
             TimeSpan time = TimeSpan.FromSeconds(seconds);
@@ -229,7 +229,7 @@ namespace Lutebot.UI
         private void LoadFileButton_Click(object sender, EventArgs e)
         {
             OpenFileDialog openMusicFileDialog = new OpenFileDialog();
-            openMusicFileDialog.DefaultExt = "mid";
+            openMusicFileDialog.DefaultExt = "abc";
             openMusicFileDialog.Filter = "Music files|*.abc|All files|*.*";
             openMusicFileDialog.Title = "Open Music file";
             if (openMusicFileDialog.ShowDialog() == DialogResult.OK)

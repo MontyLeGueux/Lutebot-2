@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Lutebot_2.Core.Abc
+namespace Lutebot.Core
 {
-    class MidiPlayer
+    class Note
     {
+        private int code;
+        public int Code { get => code; set => code = value; }
     }
 }

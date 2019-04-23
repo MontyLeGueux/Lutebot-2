@@ -54,10 +54,10 @@
     <Compile Include="Config\PropertyItem.cs" />
     <Compile Include="Controller\MordhauController.cs" />
     <Compile Include="Controller\SoundEffectController.cs" />
-    <Compile Include="Core\Abc\AbcPlayer.cs" />
-    <Compile Include="Core\Midi\MidiPlayer.cs" />
     <Compile Include="Core\LutebotException.cs" />
     <Compile Include="Core\Music.cs" />
+    <Compile Include="Core\Note.cs" />
+    <Compile Include="Core\Track.cs" />
     <Compile Include="Reader\Abc\AbcParsingException.cs" />
     <Compile Include="Reader\Abc\MusicElements\AbcHeader.cs" />
     <Compile Include="Reader\Abc\MusicElements\AbcItem.cs" />
