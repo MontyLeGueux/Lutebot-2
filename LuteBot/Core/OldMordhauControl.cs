@@ -11,7 +11,7 @@ using System.Windows.Forms;
 
 namespace LuteBot.Core
 {
-    class OldMordhauControl
+    class RIPMordhauControl
     {
 
         public enum NoteConversionMode
@@ -54,7 +54,7 @@ namespace LuteBot.Core
         private NoteMessageCallback noteOnCallback;
 
 
-        public OldMordhauControl(ActionManager actionManager, ConfigManager configManager)
+        public RIPMordhauControl(ActionManager actionManager, ConfigManager configManager)
         {
             context = SynchronizationContext.Current;
             this.actionManager = actionManager;

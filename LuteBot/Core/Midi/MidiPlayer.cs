@@ -17,15 +17,16 @@ namespace LuteBot.Core.Midi
         private OutputDevice outDevice;
         private Sequence sequence;
         private Sequencer sequencer;
-        private MordhauControl mordhauControl;
+        private MordhauOutDevice mordhauOutDevice;
         private TrackSelectionManager trackSelectionManager;
+        private ActionManager actionManager;
 
         private bool isPlaying;
 
         public MidiPlayer(ActionManager actionManager, ConfigManager configManager, TrackSelectionManager trackSelectionManager)
         {
             isPlaying = false;
-            mordhauControl = new MordhauControl(actionManager, configManager);
+            mordhauOutDevice = new MordhauOutDevice(configManager, actionManager);
             this.configManager = configManager;
             this.trackSelectionManager = trackSelectionManager;
             sequence = new Sequence
@@ -49,6 +50,7 @@ namespace LuteBot.Core.Midi
                 outDevice = new OutputDevice(0);
                 sequence.LoadCompleted += HandleLoadCompleted;
             }
+            this.actionManager = actionManager;
         }
 
         public void ResetDevice()
@@ -166,8 +168,8 @@ namespace LuteBot.Core.Midi
             {
                 base.LoadCompleted(this, e);
 
-                mordhauControl.HighMidiNoteId = sequence.MaxNoteId;
-                mordhauControl.LowMidiNoteId = sequence.MinNoteId;
+                mordhauOutDevice.HighMidiNoteId = sequence.MaxNoteId;
+                mordhauOutDevice.LowMidiNoteId = sequence.MinNoteId;
             }
         }
 
@@ -200,11 +202,22 @@ namespace LuteBot.Core.Midi
         private void HandleChannelMessagePlayed(object sender, ChannelMessageEventArgs e)
         {
             GlobalLogger.Log("LuteBotForm", LoggerManager.LoggerLevel.Medium, "Channel message incoming, Track id = " + e.TrackId);
-            if (bool.Parse(configManager.GetProperty("SoundEffects").Code) && !disposed)
+            if (configManager.GetProperty("NoteConversionMode").Code != "4")
             {
-                outDevice.Send(mordhauControl.FilterNote(trackSelectionManager.FilterMidiEvent(e.Message)));
+                if (bool.Parse(configManager.GetProperty("SoundEffects").Code) && !disposed)
+                {
+                    outDevice.Send(mordhauOutDevice.FilterNote(trackSelectionManager.FilterMidiEvent(e.Message)));
+                }
+                else
+                {
+                    mordhauOutDevice.SendNote(trackSelectionManager.FilterMidiEvent(e.Message));
+                }
             }
-            mordhauControl.Send(trackSelectionManager.FilterMidiEvent(e.Message));
+            else
+            {
+                outDevice.Send(trackSelectionManager.FilterMidiEvent(e.Message));
+            }
+
         }
 
         private void HandlePlayingCompleted(object sender, EventArgs e)

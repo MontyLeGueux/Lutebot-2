@@ -54,7 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\Midi\MidiPlayer.cs" />
-    <Compile Include="Core\MordhauControl.cs" />
+    <Compile Include="Core\MordhauOutDevice.cs" />
     <Compile Include="Core\OldMordhauControl.cs" />
     <Compile Include="Core\Player.cs" />
     <Compile Include="Logger\GlobalLogger.cs" />

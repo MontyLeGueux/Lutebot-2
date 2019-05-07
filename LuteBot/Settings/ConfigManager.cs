@@ -190,7 +190,13 @@ namespace LuteBot
 
         public bool GetBooleanProperty(string key)
         {
-            Boolean.TryParse(GetProperty(key).Code, out bool result);
+            bool.TryParse(GetProperty(key).Code, out bool result);
+            return result;
+        }
+
+        public int GetIntegerProperty(string key)
+        {
+            int.TryParse(GetProperty(key).Code, out int result);
             return result;
         }
 
