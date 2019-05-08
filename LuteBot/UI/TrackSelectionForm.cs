@@ -1,5 +1,6 @@
-﻿using LuteBot.Logger;
+﻿using LuteBot.Config;
 using LuteBot.TrackSelection;
+using LuteBot.UI.Utils;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -15,17 +16,14 @@ namespace LuteBot.UI
     public partial class TrackSelectionForm : Form
     {
         TrackSelectionManager trackSelectionManager;
-        private ConfigManager configManager;
 
-        public TrackSelectionForm(TrackSelectionManager trackSelectionManager, ConfigManager configManager)
+        public TrackSelectionForm(TrackSelectionManager trackSelectionManager)
         {
             this.trackSelectionManager = trackSelectionManager;
             trackSelectionManager.TrackChanged += new EventHandler(TrackChangedHandler);
             InitializeComponent();
             InitLists();
             trackSelectionManager.autoLoadProfile = AutoActivateCheckBox.Checked;
-            this.configManager = configManager;
-            GlobalLogger.Log("TrackSelectionForm", LoggerManager.LoggerLevel.Essential, "TrackSelectionForm Initialised");
         }
 
         private void InitLists()
@@ -34,7 +32,7 @@ namespace LuteBot.UI
             ChannelsListBox.Items.Clear();
             foreach (MidiChannelItem channel in trackSelectionManager.MidiChannels)
             {
-                ChannelsListBox.Items.Add(channel.Name , channel.Active);
+                ChannelsListBox.Items.Add(channel.Name, channel.Active);
             }
             foreach (TrackItem track in trackSelectionManager.MidiTracks)
             {
@@ -50,8 +48,8 @@ namespace LuteBot.UI
 
         private void TrackSelectionForm_Closing(object sender, FormClosingEventArgs e)
         {
-            configManager.SetWindowCoordinates("TrackSelectionPos", new Point() { X = this.Top, Y = this.Left });
-            configManager.Save();
+            WindowPositionUtils.UpdateBounds(PropertyItem.TrackSelectionPos, new Point() { X = Left, Y = Top });
+            ConfigManager.SaveConfig();
         }
 
         private void SelectAllChannelsTextBox_CheckedChanged(object sender, EventArgs e)

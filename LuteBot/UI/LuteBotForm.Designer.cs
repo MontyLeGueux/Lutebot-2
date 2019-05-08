@@ -44,6 +44,7 @@ namespace LuteBot
             this.soundBoardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.onlineSyncToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.trackFilteringToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.liveInputToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.focusToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.MusicProgressBar = new System.Windows.Forms.TrackBar();
@@ -110,43 +111,52 @@ namespace LuteBot
             this.playListToolStripMenuItem,
             this.soundBoardToolStripMenuItem,
             this.onlineSyncToolStripMenuItem,
-            this.trackFilteringToolStripMenuItem});
+            this.trackFilteringToolStripMenuItem,
+            this.liveInputToolStripMenuItem});
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(105, 22);
             this.openToolStripMenuItem.Text = "Open";
             // 
             // playListToolStripMenuItem
             // 
             this.playListToolStripMenuItem.Name = "playListToolStripMenuItem";
-            this.playListToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.playListToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
             this.playListToolStripMenuItem.Text = "PlayList";
             this.playListToolStripMenuItem.Click += new System.EventHandler(this.PlayListToolStripMenuItem_Click);
             // 
             // soundBoardToolStripMenuItem
             // 
             this.soundBoardToolStripMenuItem.Name = "soundBoardToolStripMenuItem";
-            this.soundBoardToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.soundBoardToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
             this.soundBoardToolStripMenuItem.Text = "SoundBoard";
             this.soundBoardToolStripMenuItem.Click += new System.EventHandler(this.SoundBoardToolStripMenuItem_Click);
             // 
             // onlineSyncToolStripMenuItem
             // 
+            this.onlineSyncToolStripMenuItem.Enabled = false;
             this.onlineSyncToolStripMenuItem.Name = "onlineSyncToolStripMenuItem";
-            this.onlineSyncToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.onlineSyncToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
             this.onlineSyncToolStripMenuItem.Text = "Online Sync";
             this.onlineSyncToolStripMenuItem.Click += new System.EventHandler(this.OnlineSyncToolStripMenuItem_Click);
             // 
             // trackFilteringToolStripMenuItem
             // 
             this.trackFilteringToolStripMenuItem.Name = "trackFilteringToolStripMenuItem";
-            this.trackFilteringToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.trackFilteringToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
             this.trackFilteringToolStripMenuItem.Text = "Track Filtering";
             this.trackFilteringToolStripMenuItem.Click += new System.EventHandler(this.TrackFilteringToolStripMenuItem_Click);
+            // 
+            // liveInputToolStripMenuItem
+            // 
+            this.liveInputToolStripMenuItem.Name = "liveInputToolStripMenuItem";
+            this.liveInputToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.liveInputToolStripMenuItem.Text = "Live Input";
+            this.liveInputToolStripMenuItem.Click += new System.EventHandler(this.liveInputToolStripMenuItem_Click);
             // 
             // focusToolStripMenuItem
             // 
             this.focusToolStripMenuItem.Name = "focusToolStripMenuItem";
-            this.focusToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.focusToolStripMenuItem.Size = new System.Drawing.Size(105, 22);
             this.focusToolStripMenuItem.Text = "Focus";
             this.focusToolStripMenuItem.Click += new System.EventHandler(this.LuteBotForm_Focus);
             // 
@@ -249,8 +259,6 @@ namespace LuteBot
             // 
             // LuteBotForm
             // 
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(462, 164);
@@ -267,6 +275,8 @@ namespace LuteBot
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "LuteBotForm";
             this.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.Text = "LuteBot";
@@ -303,6 +313,7 @@ namespace LuteBot
         private Label EndTimeLabel;
         private ToolStripMenuItem trackFilteringToolStripMenuItem;
         private ToolStripMenuItem focusToolStripMenuItem;
+        private ToolStripMenuItem liveInputToolStripMenuItem;
     }
 }
 

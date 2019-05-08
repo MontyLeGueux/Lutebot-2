@@ -1,11 +1,13 @@
-﻿using LuteBot.Core;
+﻿using LuteBot.Config;
+using LuteBot.Core;
 using LuteBot.Core.Midi;
-using LuteBot.Logger;
+using LuteBot.IO.KB;
 using LuteBot.OnlineSync;
 using LuteBot.playlist;
-using LuteBot.SoundBoard;
+using LuteBot.Soundboard;
 using LuteBot.TrackSelection;
 using LuteBot.UI;
+using LuteBot.UI.Utils;
 using Sanford.Multimedia.Midi;
 using System;
 using System.ComponentModel;
@@ -37,15 +39,12 @@ namespace LuteBot
         private static extern IntPtr GetModuleHandle(string lpModuleName);
 
         static HotkeyManager hotkeyManager;
-        static ConfigManager configManager;
-        static ActionManager actionManager;
-        LoggerManager loggerManager;
 
         TrackSelectionForm trackSelectionForm;
         OnlineSyncForm onlineSyncForm;
         SoundBoardForm soundBoardForm;
         PlayListForm playListForm;
-        LoggerForm loggerForm;
+        LiveInputForm liveInputForm;
 
         Player player;
 
@@ -58,7 +57,7 @@ namespace LuteBot
         bool autoplay = false;
         bool isDonePlaying = false;
 
-        static PlayList playList;
+        static PlayListManager playList;
         static SoundBoardManager soundBoardManager;
         static TrackSelectionManager trackSelectionManager;
         static OnlineSyncManager onlineManager;
@@ -68,20 +67,16 @@ namespace LuteBot
         public LuteBotForm()
         {
             InitializeComponent();
-            loggerManager = new LoggerManager();
-            configManager = new ConfigManager();
-            loggerManager.IsOn = configManager.GetBooleanProperty("DebugMode");
 
             onlineManager = new OnlineSyncManager();
-            playList = new PlayList();
+            playList = new PlayListManager();
             trackSelectionManager = new TrackSelectionManager();
             playList.PlayListUpdatedEvent += new EventHandler<PlayListEventArgs>(HandlePlayListChanged);
             soundBoardManager = new SoundBoardManager();
             soundBoardManager.SoundBoardTrackRequest += new EventHandler<SoundBoardEventArgs>(HandleSoundBoardTrackRequest);
-            actionManager = new ActionManager(configManager);
-            player = new MidiPlayer(actionManager, configManager, trackSelectionManager);
+            player = new MidiPlayer(trackSelectionManager);
             player.SongLoaded += new EventHandler<AsyncCompletedEventArgs>(PlayerLoadCompleted);
-            hotkeyManager = new HotkeyManager(configManager);
+            hotkeyManager = new HotkeyManager();
             hotkeyManager.NextKeyPressed += new EventHandler(NextButton_Click);
             hotkeyManager.PlayKeyPressed += new EventHandler(PlayButton_Click);
             hotkeyManager.PreviousKeyPressed += new EventHandler(PreviousButton_Click);
@@ -97,10 +92,9 @@ namespace LuteBot
             _hookID = SetHook(_proc);
             OpenDialogs();
             this.StartPosition = FormStartPosition.Manual;
-            Point coords = configManager.GetWindowCoordinates("MainWindowPos");
-            Top = coords.X;
-            Left = coords.Y;
-            GlobalLogger.Log("LuteBotForm", LoggerManager.LoggerLevel.Essential, "LuteBotForm Initialised");
+            Point coords = WindowPositionUtils.CheckPosition(ConfigManager.GetCoordsProperty(PropertyItem.MainWindowPos));
+            Top = coords.Y;
+            Left = coords.X;
         }
 
         private void PlayerLoadCompleted(object sender, AsyncCompletedEventArgs e)
@@ -123,7 +117,6 @@ namespace LuteBot
                 if (trackSelectionManager.autoLoadProfile)
                 {
                     trackSelectionManager.LoadTrackManager();
-                    GlobalLogger.Log("LuteBotForm", LoggerManager.LoggerLevel.Basic, "Loaded Channel profile");
                 }
 
                 MusicProgressBar.Value = 0;
@@ -136,7 +129,6 @@ namespace LuteBot
                     Play();
                     autoplay = false;
                 }
-                GlobalLogger.Log("LuteBotForm", LoggerManager.LoggerLevel.Essential, "Song : " + currentTrackName + "loaded successfully");
             }
             else
             {
@@ -158,14 +150,6 @@ namespace LuteBot
 
         private void LuteBotForm_Focus(object sender, EventArgs e)
         {
-            if (loggerForm != null && !loggerForm.IsDisposed)
-            {
-                if (loggerForm.WindowState == FormWindowState.Minimized)
-                {
-                    loggerForm.WindowState = FormWindowState.Normal;
-                }
-                loggerForm.Focus();
-            }
             if (trackSelectionForm != null && !trackSelectionForm.IsDisposed)
             {
                 if (trackSelectionForm.WindowState == FormWindowState.Minimized)
@@ -197,6 +181,14 @@ namespace LuteBot
                     playListForm.WindowState = FormWindowState.Normal;
                 }
                 playListForm.Focus();
+            }
+            if (liveInputForm != null && !liveInputForm.IsDisposed)
+            {
+                if (liveInputForm.WindowState == FormWindowState.Minimized)
+                {
+                    liveInputForm.WindowState = FormWindowState.Normal;
+                }
+                liveInputForm.Focus();
             }
             this.Focus();
         }
@@ -244,9 +236,9 @@ namespace LuteBot
             }
             else
             {
-                if (ActionManager.AutoConsoleModeFromString(configManager.GetProperty("AutoConsoleOpen").Code) == ActionManager.AutoConsoleMode.Old)
+                if (ActionManager.AutoConsoleModeFromString(ConfigManager.GetProperty(PropertyItem.ConsoleOpenMode)) == ActionManager.AutoConsoleMode.Old)
                 {
-                    actionManager.ToggleConsole(false);
+                    ActionManager.ToggleConsole(false);
                 }
                 StartLabel.Text = EndTimeLabel.Text;
                 PlayButton.Text = playButtonStartString;
@@ -261,40 +253,38 @@ namespace LuteBot
 
         private void OpenDialogs()
         {
-            if (configManager.GetBooleanProperty("DebugMode"))
+            if (ConfigManager.GetBooleanProperty(PropertyItem.SoundBoard))
             {
-                loggerForm = new LoggerForm(loggerManager, configManager);
-                loggerForm.Show();
-            }
-            if (configManager.GetBooleanProperty("SoundBoard"))
-            {
-                soundBoardForm = new SoundBoardForm(soundBoardManager, configManager);
-                Point coords = configManager.GetWindowCoordinates("SoundBoardPos");
+                soundBoardForm = new SoundBoardForm(soundBoardManager);
+                Point coords = WindowPositionUtils.CheckPosition(ConfigManager.GetCoordsProperty(PropertyItem.SoundBoardPos));
                 soundBoardForm.Show();
-                soundBoardForm.Top = coords.X;
-                soundBoardForm.Left = coords.Y;
+                soundBoardForm.Top = coords.Y;
+                soundBoardForm.Left = coords.X;
             }
-            if (configManager.GetBooleanProperty("PlayList"))
+            if (ConfigManager.GetBooleanProperty(PropertyItem.PlayList))
             {
-                playListForm = new PlayListForm(playList, configManager);
-                Point coords = configManager.GetWindowCoordinates("PlayListPos");
+                playListForm = new PlayListForm(playList);
+                Point coords = WindowPositionUtils.CheckPosition(ConfigManager.GetCoordsProperty(PropertyItem.PlayListPos));
                 playListForm.Show();
-                playListForm.Top = coords.X;
-                playListForm.Left = coords.Y;
+                playListForm.Top = coords.Y;
+                playListForm.Left = coords.X;
 
             }
-            if (configManager.GetBooleanProperty("TrackSelection"))
+            if (ConfigManager.GetBooleanProperty(PropertyItem.TrackSelection))
             {
-                trackSelectionForm = new TrackSelectionForm(trackSelectionManager, configManager);
-                Point coords = configManager.GetWindowCoordinates("TrackSelectionPos");
+                trackSelectionForm = new TrackSelectionForm(trackSelectionManager);
+                Point coords = WindowPositionUtils.CheckPosition(ConfigManager.GetCoordsProperty(PropertyItem.TrackSelectionPos));
                 trackSelectionForm.Show();
-                trackSelectionForm.Top = coords.X;
-                trackSelectionForm.Left = coords.Y;
+                trackSelectionForm.Top = coords.Y;
+                trackSelectionForm.Left = coords.X;
             }
-            if (configManager.GetBooleanProperty("OnlineSync"))
+            if (ConfigManager.GetBooleanProperty(PropertyItem.LiveMidi))
             {
-                onlineSyncForm = new OnlineSyncForm(onlineManager);
-                onlineSyncForm.Show();
+                liveInputForm = new LiveInputForm();
+                Point coords = WindowPositionUtils.CheckPosition(ConfigManager.GetCoordsProperty(PropertyItem.LiveMidiPos));
+                liveInputForm.Show();
+                liveInputForm.Top = coords.Y;
+                liveInputForm.Left = coords.X;
             }
         }
 
@@ -307,27 +297,18 @@ namespace LuteBot
         private void KeyBindingToolStripMenuItem_Click(object sender, EventArgs e)
         {
             (new KeyBindingForm()).ShowDialog();
-            configManager.RefreshConfigAndSave();
         }
 
         private void SettingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             (new SettingsForm()).ShowDialog();
-            loggerManager.IsOn = configManager.GetBooleanProperty("DebugMode");
-            if (configManager.GetBooleanProperty("DebugMode") && (loggerForm == null || loggerForm.IsDisposed))
-            {
-                loggerForm = new LoggerForm(loggerManager, configManager);
-                loggerForm.Show();
-            }
-            configManager.RefreshConfigAndSave();
-            player.ResetSoundEffects();
+            player.Pause();
         }
 
         protected override void OnClosing(CancelEventArgs e)
         {
             player.Dispose();
-            configManager.RefreshConfigAndSave();
-            configManager.SetWindowCoordinates("MainWindowPos", new Point() { X = this.Top, Y = this.Left });
+            WindowPositionUtils.UpdateBounds(PropertyItem.MainWindowPos, new Point() { X = Left, Y = Top });
             if (soundBoardForm != null)
             {
                 soundBoardForm.Close();
@@ -340,7 +321,11 @@ namespace LuteBot
             {
                 trackSelectionForm.Close();
             }
-            configManager.Save();
+            if (liveInputForm != null)
+            {
+                liveInputForm.Close();
+            }
+            ConfigManager.SaveConfig();
             base.OnClosing(e);
         }
 
@@ -406,46 +391,52 @@ namespace LuteBot
 
         private void Play()
         {
-            if (ActionManager.AutoConsoleModeFromString(configManager.GetProperty("AutoConsoleOpen").Code) == ActionManager.AutoConsoleMode.Old)
+            if (ActionManager.AutoConsoleModeFromString(ConfigManager.GetProperty(PropertyItem.ConsoleOpenMode)) == ActionManager.AutoConsoleMode.Old)
             {
-                actionManager.ToggleConsole(true);
+                ActionManager.ToggleConsole(true);
             }
             PlayButton.Text = playButtonStopString;
             player.Play();
             timer1.Start();
             playButtonIsPlaying = true;
-            GlobalLogger.Log("LuteBotForm", LoggerManager.LoggerLevel.Basic, "Playing now");
         }
+
         private void Pause()
         {
-            if (ActionManager.AutoConsoleModeFromString(configManager.GetProperty("AutoConsoleOpen").Code) == ActionManager.AutoConsoleMode.Old)
+            if (ActionManager.AutoConsoleModeFromString(ConfigManager.GetProperty(PropertyItem.ConsoleOpenMode)) == ActionManager.AutoConsoleMode.Old)
             {
-                actionManager.ToggleConsole(false);
+                ActionManager.ToggleConsole(false);
             }
             PlayButton.Text = playButtonStartString;
             player.Pause();
             timer1.Stop();
             playButtonIsPlaying = false;
-            GlobalLogger.Log("LuteBotForm", LoggerManager.LoggerLevel.Basic, "Pausing now");
         }
 
         private void PlayListToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            playListForm = new PlayListForm(playList, configManager);
-            Point coords = configManager.GetWindowCoordinates("PlayListPos");
-            playListForm.Show();
-            playListForm.Top = coords.X;
-            playListForm.Left = coords.Y;
+            if (playListForm == null || playListForm.IsDisposed)
+            {
+                playListForm = new PlayListForm(playList);
+                Point coords = WindowPositionUtils.CheckPosition(ConfigManager.GetCoordsProperty(PropertyItem.PlayListPos));
+                playListForm.Show();
+                playListForm.Top = coords.Y;
+                playListForm.Left = coords.X;
+            }
+
 
         }
 
         private void SoundBoardToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            soundBoardForm = new SoundBoardForm(soundBoardManager, configManager);
-            Point coords = configManager.GetWindowCoordinates("SoundBoardPos");
-            soundBoardForm.Show();
-            soundBoardForm.Top = coords.X;
-            soundBoardForm.Left = coords.Y;
+            if (soundBoardForm == null || soundBoardForm.IsDisposed)
+            {
+                soundBoardForm = new SoundBoardForm(soundBoardManager);
+                Point coords = WindowPositionUtils.CheckPosition(ConfigManager.GetCoordsProperty(PropertyItem.SoundBoardPos));
+                soundBoardForm.Show();
+                soundBoardForm.Top = coords.Y;
+                soundBoardForm.Left = coords.X;
+            }
 
         }
 
@@ -492,11 +483,14 @@ namespace LuteBot
 
         private void TrackFilteringToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            trackSelectionForm = new TrackSelectionForm(trackSelectionManager, configManager);
-            Point coords = configManager.GetWindowCoordinates("TrackSelectionPos");
-            trackSelectionForm.Show();
-            trackSelectionForm.Top = coords.X;
-            trackSelectionForm.Left = coords.Y;
+            if (trackSelectionForm == null || trackSelectionForm.IsDisposed)
+            {
+                trackSelectionForm = new TrackSelectionForm(trackSelectionManager);
+                Point coords = WindowPositionUtils.CheckPosition(ConfigManager.GetCoordsProperty(PropertyItem.TrackSelectionPos));
+                trackSelectionForm.Show();
+                trackSelectionForm.Top = coords.Y;
+                trackSelectionForm.Left = coords.X;
+            }
         }
 
         private static IntPtr SetHook(LowLevelKeyboardProc proc)
@@ -523,6 +517,18 @@ namespace LuteBot
                 }
             }
             return CallNextHookEx(_hookID, nCode, wParam, lParam);
+        }
+
+        private void liveInputToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (liveInputForm == null || liveInputForm.IsDisposed)
+            {
+                liveInputForm = new LiveInputForm();
+                Point coords = WindowPositionUtils.CheckPosition(ConfigManager.GetCoordsProperty(PropertyItem.LiveMidiPos));
+                liveInputForm.Show();
+                liveInputForm.Top = coords.Y;
+                liveInputForm.Left = coords.X;
+            }
         }
     }
 }

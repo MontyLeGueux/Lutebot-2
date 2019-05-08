@@ -1,5 +1,6 @@
-﻿using LuteBot.Logger;
-using LuteBot.SoundBoard;
+﻿using LuteBot.Config;
+using LuteBot.Soundboard;
+using LuteBot.UI.Utils;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -18,22 +19,24 @@ namespace LuteBot
         private String waitingForKeyPressString = "[Enter a Key]";
         private SoundBoardManager soundBoardManager;
 
-        private ConfigManager configManager;
-
         private List<Button> soundTrackButtons;
         private List<ContextMenu> soundBoardContextMenus;
 
         private int waitingForKeyPressIndex;
 
-        public SoundBoardForm(SoundBoardManager soundBoardManager, ConfigManager configManager)
+        public SoundBoardForm(SoundBoardManager soundBoardManager)
         {
             InitializeComponent();
             this.soundBoardManager = soundBoardManager;
+            var lastSoundBoardPath = ConfigManager.GetProperty(PropertyItem.LastSoundBoardLocation);
+            if (lastSoundBoardPath != null && lastSoundBoardPath.Length > 0)
+            {
+                soundBoardManager.LoadLastSoundBoard(lastSoundBoardPath);
+            }
             InitButtonList();
             ContextMenuHelper();
             waitingForKeyPressIndex = -1;
-            this.configManager = configManager;
-            GlobalLogger.Log("SoundBoardForm", LoggerManager.LoggerLevel.Essential, "SoundBoardForm Initialised");
+            RefreshButtons();
         }
 
         private void InitButtonList()
@@ -52,7 +55,7 @@ namespace LuteBot
 
         private void RefreshButtons()
         {
-            for(int i = 0; i < soundTrackButtons.Count; i++)
+            for (int i = 0; i < soundTrackButtons.Count; i++)
             {
                 if (i == waitingForKeyPressIndex)
                 {
@@ -65,7 +68,7 @@ namespace LuteBot
                         else
                         {
                             soundTrackButtons[i].Text = soundBoardManager.GetTrack(i).Name + "\n" + waitingForKeyPressString;
-                        }                        
+                        }
                     }
                     else
                     {
@@ -118,7 +121,7 @@ namespace LuteBot
         private void UnassignMenuItem_Click(object sender, EventArgs e)
         {
             int index = -1;
-            for(int i = 0; i < soundBoardContextMenus.Count; i++)
+            for (int i = 0; i < soundBoardContextMenus.Count; i++)
             {
                 if (sender.Equals(soundBoardContextMenus[i].MenuItems[0]))
                 {
@@ -310,8 +313,9 @@ namespace LuteBot
 
         private void SoundBoardForm_Closing(object sender, FormClosingEventArgs e)
         {
-            configManager.SetWindowCoordinates("SoundBoardPos", new Point() { X = this.Top, Y = this.Left });
-            configManager.Save();
+            ConfigManager.SetProperty(PropertyItem.LastSoundBoardLocation, soundBoardManager.LastSoundBoardLocation);
+            WindowPositionUtils.UpdateBounds(PropertyItem.SoundBoardPos, new Point() { X = Left, Y = Top });
+            ConfigManager.SaveConfig();
         }
     }
 }

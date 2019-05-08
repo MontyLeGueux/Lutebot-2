@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace LuteBot.SoundBoard
+namespace LuteBot.Soundboard
 {
     public class SoundBoardItem
     {

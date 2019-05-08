@@ -1,4 +1,4 @@
-﻿using LuteBot.Saving;
+﻿using LuteBot.IO.Files;
 using Sanford.Multimedia.Midi;
 using System;
 using System.Collections.Generic;
@@ -82,7 +82,7 @@ namespace LuteBot.TrackSelection
                 }
                 if (i < channels.Count)
                 {
-                    midiChannels.Add(new MidiChannelItem() { Id = channels[i], Active = true});
+                    midiChannels.Add(new MidiChannelItem() { Id = channels[i], Active = true });
                 }
             }
             EventHelper();
@@ -103,7 +103,7 @@ namespace LuteBot.TrackSelection
                         }
                     }
                 }
-            }   
+            }
             return newMessage;
         }
 

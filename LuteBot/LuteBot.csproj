@@ -36,6 +36,9 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="Sanford.Multimedia">
       <HintPath>..\..\CSharpMidiToolkitV5_demo\Sanford.Multimedia.dll</HintPath>
     </Reference>
@@ -55,27 +58,30 @@
   <ItemGroup>
     <Compile Include="Core\Midi\MidiPlayer.cs" />
     <Compile Include="Core\MordhauOutDevice.cs" />
-    <Compile Include="Core\OldMordhauControl.cs" />
     <Compile Include="Core\Player.cs" />
-    <Compile Include="Logger\GlobalLogger.cs" />
-    <Compile Include="Logger\LoggerEvent.cs" />
-    <Compile Include="Logger\LoggerManager.cs" />
+    <Compile Include="IO\KB\Keybinds.cs" />
+    <Compile Include="LiveInput\Midi\LiveMidiManager.cs" />
+    <Compile Include="LiveInput\Midi\MidiDeviceItem.cs" />
     <Compile Include="OnlineSync\AsynchronousClient.cs" />
     <Compile Include="OnlineSync\AsynchronousSocketListener.cs" />
     <Compile Include="OnlineSync\OnlineSyncManager.cs" />
     <Compile Include="OnlineSync\Party.cs" />
     <Compile Include="OnlineSync\PlayerProfile.cs" />
     <Compile Include="Playlist\PlayList.cs" />
+    <Compile Include="Playlist\PlayListManager.cs" />
     <Compile Include="Playlist\PlayListEventArgs.cs" />
-    <Compile Include="Saving\SaveManager.cs" />
-    <Compile Include="Settings\ActionKey.cs" />
-    <Compile Include="Settings\ActionManager.cs" />
-    <Compile Include="Settings\HotkeyManager.cs" />
-    <Compile Include="Settings\ConfigException.cs" />
-    <Compile Include="Settings\ConfigManager.cs" />
-    <Compile Include="SoundBoard\SoundBoardEventArgs.cs" />
-    <Compile Include="SoundBoard\SoundBoardItem.cs" />
-    <Compile Include="SoundBoard\SoundBoardManager.cs" />
+    <Compile Include="IO\Files\SaveManager.cs" />
+    <Compile Include="Config\Config.cs" />
+    <Compile Include="Config\ConfigManager.cs" />
+    <Compile Include="IO\Files\FileIO.cs" />
+    <Compile Include="IO\KB\ActionManager.cs" />
+    <Compile Include="IO\KB\HotkeyManager.cs" />
+    <Compile Include="Config\Property.cs" />
+    <Compile Include="Config\PropertyItem.cs" />
+    <Compile Include="Soundboard\SoundBoard.cs" />
+    <Compile Include="Soundboard\SoundBoardEventArgs.cs" />
+    <Compile Include="Soundboard\SoundBoardItem.cs" />
+    <Compile Include="Soundboard\SoundBoardManager.cs" />
     <Compile Include="TrackSelection\MidiChannelItem.cs" />
     <Compile Include="TrackSelection\MidiChannelTypes.cs" />
     <Compile Include="TrackSelection\TrackItem.cs" />
@@ -87,12 +93,12 @@
     <Compile Include="UI\KeyBindingForm.Designer.cs">
       <DependentUpon>KeyBindingForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\KeyHandler.cs" />
-    <Compile Include="UI\LoggerForm.cs">
+    <Compile Include="UI\Utils\KeyHandler.cs" />
+    <Compile Include="UI\LiveInputForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\LoggerForm.Designer.cs">
-      <DependentUpon>LoggerForm.cs</DependentUpon>
+    <Compile Include="UI\LiveInputForm.Designer.cs">
+      <DependentUpon>LiveInputForm.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\LuteBotForm.cs">
       <SubType>Form</SubType>
@@ -133,11 +139,12 @@
     <Compile Include="UI\TrackSelectionForm.Designer.cs">
       <DependentUpon>TrackSelectionForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\Utils\WindowPositionUtils.cs" />
     <EmbeddedResource Include="UI\KeyBindingForm.resx">
       <DependentUpon>KeyBindingForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\LoggerForm.resx">
-      <DependentUpon>LoggerForm.cs</DependentUpon>
+    <EmbeddedResource Include="UI\LiveInputForm.resx">
+      <DependentUpon>LiveInputForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\LuteBotForm.resx">
       <DependentUpon>LuteBotForm.cs</DependentUpon>
@@ -149,7 +156,7 @@
       <DependentUpon>PlayListForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -168,7 +175,8 @@
       <DependentUpon>TrackSelectionForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />
-    <None Include="Settings\App.config">
+    <None Include="packages.config" />
+    <None Include="Config\Old\App.config">
       <SubType>Designer</SubType>
     </None>
     <None Include="Properties\Settings.settings">
@@ -183,13 +191,14 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="icon.ico" />
+    <None Include="Resources\DefaultConfig.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="SongProfiles\" />
+    <Folder Include="Core\Old\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Libraries\Sanford.Multimedia.Midi-master\Source\Sanford.Multimedia.Midi.csproj">
-      <Project>{4269C72A-8D3A-4737-8F89-72EAA33EA9E1}</Project>
+    <ProjectReference Include="..\..\..\Libraries\Sanford.Multimedia.Midi-master\Source\Sanford.Multimedia.Midi.csproj">
+      <Project>{4269c72a-8d3a-4737-8f89-72eaa33ea9e1}</Project>
       <Name>Sanford.Multimedia.Midi</Name>
     </ProjectReference>
   </ItemGroup>

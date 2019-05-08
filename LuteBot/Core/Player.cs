@@ -11,7 +11,6 @@ namespace LuteBot.Core
     {
 
         public event EventHandler<AsyncCompletedEventArgs> SongLoaded;
-        protected ConfigManager configManager;
         protected bool disposed;
 
         public bool Disposed { get => disposed; }

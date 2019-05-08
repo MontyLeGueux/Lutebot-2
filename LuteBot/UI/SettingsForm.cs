@@ -1,4 +1,5 @@
-﻿using LuteBot.Logger;
+﻿using LuteBot.Config;
+using LuteBot.IO.KB;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -17,7 +18,6 @@ namespace LuteBot
     public partial class SettingsForm : Form
     {
         private readonly string versionAvaliable = "A new version is avaliable to download";
-        private ConfigManager configManager;
         private static string VERSION;
         private static string THREAD_URL = "https://mordhau.com/forum/topic/13519/mordhau-lute-bot/";
         private string latestVersion;
@@ -26,12 +26,10 @@ namespace LuteBot
         public SettingsForm()
         {
             InitializeComponent();
-            configManager = new ConfigManager();
             UpdateLinkLabel.LinkArea = new LinkArea() { Length = 0, Start = 0 };
             SetVersion();
             InitSettings();
             CheckLatestVersion(Timeout);
-            GlobalLogger.Log("SettingsForm", LoggerManager.LoggerLevel.Essential, "SettingsForm Initialised");
         }
 
         private void CheckLatestVersion(int timeout)
@@ -101,7 +99,8 @@ namespace LuteBot
             LinkLabel.Link Link = UpdateLinkLabel.Links[UpdateLinkLabel.Links.IndexOf(e.Link)];
             if (Link.Start == 27)
             {
-                if(Timeout < 3000){
+                if (Timeout < 3000)
+                {
 
                 }
                 CheckLatestVersion(Timeout + 1000);
@@ -115,92 +114,91 @@ namespace LuteBot
 
         private void InitSettings()
         {
-            SoundBoardCheckBox.Checked = configManager.GetBooleanProperty("SoundBoard");
-            PlaylistCheckBox.Checked = configManager.GetBooleanProperty("PlayList");
-            TrackSelectionCheckBox.Checked = configManager.GetBooleanProperty("TrackSelection");
-            OnlineSyncCheckBox.Checked = configManager.GetBooleanProperty("OnlineSync");
-            SoundEffectsCheckBox.Checked = configManager.GetBooleanProperty("SoundEffects");
+            SoundBoardCheckBox.Checked = ConfigManager.GetBooleanProperty(PropertyItem.SoundBoard);
+            PlaylistCheckBox.Checked = ConfigManager.GetBooleanProperty(PropertyItem.PlayList);
+            TrackSelectionCheckBox.Checked = ConfigManager.GetBooleanProperty(PropertyItem.TrackSelection);
+            OnlineSyncCheckBox.Checked = ConfigManager.GetBooleanProperty(PropertyItem.OnlineSync);
+            SoundEffectsCheckBox.Checked = ConfigManager.GetBooleanProperty(PropertyItem.SoundEffects);
             InitRadioButtons();
 
-            NoteConversionMode.SelectedIndex = int.Parse(configManager.GetProperty("NoteConversionMode").Code);
-            LowestNoteNumeric.Value = int.Parse(configManager.GetProperty("LowestNoteId").Code);
-            NoteCountNumeric.Value = int.Parse(configManager.GetProperty("AvaliableNoteCount").Code);
-            NoteCooldownNumeric.Value = int.Parse(configManager.GetProperty("NoteCooldown").Code);
-            DebugModeCheckBox.Checked = configManager.GetBooleanProperty("DebugMode");
+            NoteConversionMode.SelectedIndex = ConfigManager.GetIntegerProperty(PropertyItem.NoteConversionMode);
+            LowestNoteNumeric.Value = ConfigManager.GetIntegerProperty(PropertyItem.LowestNoteId);
+            NoteCountNumeric.Value = ConfigManager.GetIntegerProperty(PropertyItem.AvaliableNoteCount);
+            NoteCooldownNumeric.Value = ConfigManager.GetIntegerProperty(PropertyItem.NoteCooldown);
+            LiveMidiCheckBox.Checked = ConfigManager.GetBooleanProperty(PropertyItem.LiveMidi);
         }
 
         private void SetVersion()
         {
-            VersionLabel.Text = VersionLabel.Text.Replace("[VERSION]", configManager.GetVersion());
-            VERSION = configManager.GetVersion();
+            VersionLabel.Text = VersionLabel.Text.Replace("[VERSION]", ConfigManager.GetVersion());
+            VERSION = ConfigManager.GetVersion();
         }
 
         private void PlaylistCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            configManager.ChangeProperty("PlayList", PlaylistCheckBox.Checked.ToString());
+            ConfigManager.SetProperty(PropertyItem.PlayList, PlaylistCheckBox.Checked.ToString());
         }
 
         private void SoundBoardCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            configManager.ChangeProperty("SoundBoard", SoundBoardCheckBox.Checked.ToString());
+            ConfigManager.SetProperty(PropertyItem.SoundBoard, SoundBoardCheckBox.Checked.ToString());
         }
 
         private void CancelButton_Click(object sender, EventArgs e)
         {
-            configManager.RefreshConfigAndSave();
+            ConfigManager.Refresh();
             this.Close();
         }
 
         private void ApplyButton_Click(object sender, EventArgs e)
         {
-            configManager.Save();
-            configManager.RefreshConfigAndSave();
+            ConfigManager.SaveConfig();
             this.Close();
         }
 
         private void SoundEffectsCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            configManager.ChangeProperty("SoundEffects", SoundEffectsCheckBox.Checked.ToString());
+            ConfigManager.SetProperty(PropertyItem.SoundEffects, SoundEffectsCheckBox.Checked.ToString());
         }
 
         private void TrackSelectionCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            configManager.ChangeProperty("TrackSelection", TrackSelectionCheckBox.Checked.ToString());
+            ConfigManager.SetProperty(PropertyItem.TrackSelection, TrackSelectionCheckBox.Checked.ToString());
         }
 
         private void OnlineSyncCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            configManager.ChangeProperty("OnlineSync", OnlineSyncCheckBox.Checked.ToString());
+            ConfigManager.SetProperty(PropertyItem.OnlineSync, OnlineSyncCheckBox.Checked.ToString());
         }
 
         private void NoteConversionMode_SelectedIndexChanged(object sender, EventArgs e)
         {
-            configManager.ChangeProperty("NoteConversionMode", NoteConversionMode.SelectedIndex.ToString());
+            ConfigManager.SetProperty(PropertyItem.NoteConversionMode, NoteConversionMode.SelectedIndex.ToString());
         }
 
         private void LowestNoteNumeric_ValueChanged(object sender, EventArgs e)
         {
-            configManager.ChangeProperty("LowestNoteId", LowestNoteNumeric.Value.ToString());
+            ConfigManager.SetProperty(PropertyItem.LowestNoteId, LowestNoteNumeric.Value.ToString());
         }
 
         private void NoteCountNumeric_ValueChanged(object sender, EventArgs e)
         {
-            configManager.ChangeProperty("AvaliableNoteCount", (NoteCountNumeric.Value).ToString());
+            ConfigManager.SetProperty(PropertyItem.AvaliableNoteCount, (NoteCountNumeric.Value).ToString());
         }
 
         private void NoteCooldownNumeric_ValueChanged(object sender, EventArgs e)
         {
-            configManager.ChangeProperty("NoteCooldown", NoteCooldownNumeric.Value.ToString());
+            ConfigManager.SetProperty(PropertyItem.NoteCooldown, NoteCooldownNumeric.Value.ToString());
         }
 
-        private void DebugModeCheckBox_CheckedChanged(object sender, EventArgs e)
+        private void LiveMidiCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            configManager.ChangeProperty("DebugMode", DebugModeCheckBox.Checked.ToString());
+            ConfigManager.SetProperty(PropertyItem.LiveMidi, LiveMidiCheckBox.Checked.ToString());
         }
 
         private void InitRadioButtons()
         {
-            ActionManager.AutoConsoleMode consoleMode = ActionManager.AutoConsoleModeFromString(configManager.GetProperty("AutoConsoleOpen").Code);
+            ActionManager.AutoConsoleMode consoleMode = ActionManager.AutoConsoleModeFromString(ConfigManager.GetProperty(PropertyItem.ConsoleOpenMode));
             switch (consoleMode)
             {
                 case ActionManager.AutoConsoleMode.New:
@@ -225,7 +223,7 @@ namespace LuteBot
         {
             if (OldAutoConsoleRadio.Checked)
             {
-                configManager.ChangeProperty("AutoConsoleOpen", ActionManager.AutoConsoleModeToString(ActionManager.AutoConsoleMode.Old));
+                ConfigManager.SetProperty(PropertyItem.ConsoleOpenMode, ActionManager.AutoConsoleModeToString(ActionManager.AutoConsoleMode.Old));
                 NewAutoConsoleRadio.Checked = false;
                 OffAutoConsoleRadio.Checked = false;
             }
@@ -235,7 +233,7 @@ namespace LuteBot
         {
             if (NewAutoConsoleRadio.Checked)
             {
-                configManager.ChangeProperty("AutoConsoleOpen", ActionManager.AutoConsoleModeToString(ActionManager.AutoConsoleMode.New));
+                ConfigManager.SetProperty(PropertyItem.ConsoleOpenMode, ActionManager.AutoConsoleModeToString(ActionManager.AutoConsoleMode.New));
                 OldAutoConsoleRadio.Checked = false;
                 OffAutoConsoleRadio.Checked = false;
             }
@@ -245,7 +243,7 @@ namespace LuteBot
         {
             if (OffAutoConsoleRadio.Checked)
             {
-                configManager.ChangeProperty("AutoConsoleOpen", ActionManager.AutoConsoleModeToString(ActionManager.AutoConsoleMode.Off));
+                ConfigManager.SetProperty(PropertyItem.ConsoleOpenMode, ActionManager.AutoConsoleModeToString(ActionManager.AutoConsoleMode.Off));
                 NewAutoConsoleRadio.Checked = false;
                 OldAutoConsoleRadio.Checked = false;
             }

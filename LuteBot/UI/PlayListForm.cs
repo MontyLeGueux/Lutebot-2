@@ -1,6 +1,6 @@
-﻿using LuteBot.Logger;
+﻿using LuteBot.Config;
 using LuteBot.playlist;
-using LuteBot.Saving;
+using LuteBot.UI.Utils;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -16,42 +16,48 @@ namespace LuteBot
     public partial class PlayListForm : Form
     {
         private Point mDownPos;
-        private PlayList playList;
-        private ConfigManager configManager;
+        private PlayListManager playListManager;
 
-        public PlayListForm(PlayList playList, ConfigManager configManager)
+        public PlayListForm(PlayListManager playList)
         {
             InitializeComponent();
-            this.playList = playList;
-            this.playList.PlayListUpdatedEvent += new EventHandler<PlayListEventArgs>(PlayList_Updated);
-            this.configManager = configManager;
+            this.playListManager = playList;
+            this.playListManager.PlayListUpdatedEvent += new EventHandler<PlayListEventArgs>(PlayList_Updated);
+            var lastPlayListPath = ConfigManager.GetProperty(PropertyItem.LastPlaylistLocation);
+            if (lastPlayListPath != null && lastPlayListPath.Length > 0)
+            {
+                playListManager.LoadLastPlayList(lastPlayListPath);
+            }
             RefreshPlayListBox();
-            GlobalLogger.Log("PlayListForm", LoggerManager.LoggerLevel.Essential, "PlayListForm Initialised");
         }
 
         private void ContextMenuHelper()
         {
-            if (PlayListBox.SelectedIndex >= 0)
+            if (PlayListBox.Items.Count > 0 && PlayListBox.SelectedIndex >= 0)
             {
                 ContextMenu playListContextMenu = new ContextMenu();
-                
+
                 MenuItem playItem = playListContextMenu.MenuItems.Add("Play");
                 playItem.Click += new EventHandler(PlayMenuItem_Click);
                 MenuItem deleteItem = playListContextMenu.MenuItems.Add("Remove");
                 deleteItem.Click += new EventHandler(DeleteMenuItem_Click);
                 PlayListBox.ContextMenu = playListContextMenu;
             }
+            else
+            {
+                PlayListBox.ContextMenu = null;
+            }
         }
 
         private void PlayMenuItem_Click(object sender, EventArgs e)
         {
-            playList.Play(PlayListBox.SelectedIndex);
+            playListManager.Play(PlayListBox.SelectedIndex);
             RefreshPlayListBox();
         }
 
         private void DeleteMenuItem_Click(object sender, EventArgs e)
         {
-            playList.Remove(PlayListBox.SelectedIndex);
+            playListManager.Remove(PlayListBox.SelectedIndex);
             RefreshPlayListBox();
         }
 
@@ -59,9 +65,9 @@ namespace LuteBot
 
         {
             PlayListBox.Items.Clear();
-            for (int i = 0; i < playList.Count(); i++)
+            for (int i = 0; i < playListManager.Count(); i++)
             {
-                PlayListBox.Items.Add(playList.Get(i));
+                PlayListBox.Items.Add(playListManager.Get(i));
             }
             Refresh();
         }
@@ -70,7 +76,7 @@ namespace LuteBot
         {
             if (e.EventType.Equals(PlayListEventArgs.UpdatedComponent.TrackChanged))
             {
-                playList.CurrentTrackIndex = e.Id;
+                playListManager.CurrentTrackIndex = e.Id;
             }
             Refresh();
         }
@@ -96,7 +102,7 @@ namespace LuteBot
                 music.Name = filteredFileName;
                 music.Path = fileName;
                 PlayListBox.Items.Add(music);
-                playList.AddTrack(music);
+                playListManager.AddTrack(music);
             }
         }
 
@@ -120,16 +126,16 @@ namespace LuteBot
             int oldIndex = obj.source.Items.IndexOf(obj.item);
             PlayListItem tempItem = (PlayListItem)obj.item;
             obj.source.Items.Remove(obj.item);
-            playList.Remove(tempItem);
+            playListManager.Remove(tempItem);
             if (index < 0 || index >= PlayListBox.Items.Count)
             {
                 PlayListBox.Items.Add(obj.item);
-                playList.AddTrack(tempItem);
+                playListManager.AddTrack(tempItem);
             }
             else
             {
                 PlayListBox.Items.Insert(index, obj.item);
-                playList.InsertTrack(index, tempItem);
+                playListManager.InsertTrack(index, tempItem);
             }
         }
 
@@ -181,21 +187,21 @@ namespace LuteBot
 
         private void SaveButton_Click(object sender, EventArgs e)
         {
-            playList.SavePlayList();
+            playListManager.SavePlayList();
             RefreshPlayListBox();
         }
 
         private void PlayListForm_Closing(object sender, FormClosingEventArgs e)
         {
-            configManager.SetWindowCoordinates("PlayListPos", new Point() { X = this.Top, Y = this.Left });
-            configManager.Save();
+            ConfigManager.SetProperty(PropertyItem.LastPlaylistLocation, playListManager.playlist.Path);
+            WindowPositionUtils.UpdateBounds(PropertyItem.PlayListPos, new Point() { X = Left, Y = Top });
+            ConfigManager.SaveConfig();
         }
 
         private void LoadPlayListButton_Click(object sender, EventArgs e)
         {
-            playList.LoadPlayList();
+            playListManager.LoadPlayList();
             RefreshPlayListBox();
         }
     }
 }
- 

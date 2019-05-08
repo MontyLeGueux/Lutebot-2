@@ -64,3 +64,26 @@ C:\Users\Monty\Documents\programming\backups\03-02-2019\LuteBot\LuteBot\bin\Debu
 C:\Users\Monty\Documents\programming\backups\03-02-2019\LuteBot\LuteBot\bin\Debug\Sanford.Multimedia.Midi.pdb
 C:\Users\Monty\Documents\programming\backups\03-02-2019\LuteBot\LuteBot\obj\Debug\LuteBot.csproj.CopyComplete
 C:\Users\Monty\Documents\programming\backups\03-02-2019\LuteBot\LuteBot\bin\Debug\Sanford.Multimedia.Midi.xml
+C:\Users\Monty\Documents\programming\Github Repos\Lutebot-2\LuteBot\obj\Debug\LuteBot.csprojAssemblyReference.cache
+C:\Users\Monty\Documents\programming\Github Repos\Lutebot-2\LuteBot\obj\Debug\LuteBot.KeyBindingForm.resources
+C:\Users\Monty\Documents\programming\Github Repos\Lutebot-2\LuteBot\obj\Debug\LuteBot.LuteBotForm.resources
+C:\Users\Monty\Documents\programming\Github Repos\Lutebot-2\LuteBot\obj\Debug\LuteBot.UI.OnlineSyncForm.resources
+C:\Users\Monty\Documents\programming\Github Repos\Lutebot-2\LuteBot\obj\Debug\LuteBot.PlayListForm.resources
+C:\Users\Monty\Documents\programming\Github Repos\Lutebot-2\LuteBot\obj\Debug\LuteBot.Properties.Resources.resources
+C:\Users\Monty\Documents\programming\Github Repos\Lutebot-2\LuteBot\obj\Debug\LuteBot.SettingsForm.resources
+C:\Users\Monty\Documents\programming\Github Repos\Lutebot-2\LuteBot\obj\Debug\LuteBot.SoundBoardForm.resources
+C:\Users\Monty\Documents\programming\Github Repos\Lutebot-2\LuteBot\obj\Debug\LuteBot.UI.TrackSelectionForm.resources
+C:\Users\Monty\Documents\programming\Github Repos\Lutebot-2\LuteBot\obj\Debug\LuteBot.csproj.GenerateResource.cache
+C:\Users\Monty\Documents\programming\Github Repos\Lutebot-2\LuteBot\obj\Debug\LuteBot.csproj.CoreCompileInputs.cache
+C:\Users\Monty\Documents\programming\Github Repos\Lutebot-2\LuteBot\obj\Debug\LuteBot.exe
+C:\Users\Monty\Documents\programming\Github Repos\Lutebot-2\LuteBot\obj\Debug\LuteBot.pdb
+C:\Users\Monty\Documents\programming\Github Repos\Lutebot-2\LuteBot\bin\Debug\LuteBot.exe.config
+C:\Users\Monty\Documents\programming\Github Repos\Lutebot-2\LuteBot\bin\Debug\LuteBot.exe
+C:\Users\Monty\Documents\programming\Github Repos\Lutebot-2\LuteBot\bin\Debug\LuteBot.pdb
+C:\Users\Monty\Documents\programming\Github Repos\Lutebot-2\LuteBot\bin\Debug\Sanford.Multimedia.Midi.dll
+C:\Users\Monty\Documents\programming\Github Repos\Lutebot-2\LuteBot\bin\Debug\Sanford.Multimedia.Midi.pdb
+C:\Users\Monty\Documents\programming\Github Repos\Lutebot-2\LuteBot\bin\Debug\Sanford.Multimedia.Midi.xml
+C:\Users\Monty\Documents\programming\Github Repos\Lutebot-2\LuteBot\obj\Debug\LuteBot.csproj.CopyComplete
+C:\Users\Monty\Documents\programming\Github Repos\Lutebot-2\LuteBot\obj\Debug\LuteBot.UI.LiveInputForm.resources
+C:\Users\Monty\Documents\programming\Github Repos\Lutebot-2\LuteBot\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Monty\Documents\programming\Github Repos\Lutebot-2\LuteBot\bin\Debug\Newtonsoft.Json.xml

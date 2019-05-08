@@ -41,12 +41,12 @@
             this.NoteConversionMode = new System.Windows.Forms.ComboBox();
             this.NoteConversionLabel = new System.Windows.Forms.Label();
             this.SettingsGroupBox = new System.Windows.Forms.GroupBox();
+            this.LiveMidiCheckBox = new System.Windows.Forms.CheckBox();
             this.OffAutoConsoleRadio = new System.Windows.Forms.RadioButton();
             this.AutoConsoleLabel = new System.Windows.Forms.Label();
             this.OldAutoConsoleRadio = new System.Windows.Forms.RadioButton();
             this.NewAutoConsoleRadio = new System.Windows.Forms.RadioButton();
             this.AdvancedGroupBox = new System.Windows.Forms.GroupBox();
-            this.DebugModeCheckBox = new System.Windows.Forms.CheckBox();
             this.NoteCooldownLabel = new System.Windows.Forms.Label();
             this.NoteCooldownNumeric = new System.Windows.Forms.NumericUpDown();
             this.NoteCountNumeric = new System.Windows.Forms.NumericUpDown();
@@ -63,7 +63,7 @@
             // VersionLabel
             // 
             this.VersionLabel.AutoSize = true;
-            this.VersionLabel.Location = new System.Drawing.Point(4, 395);
+            this.VersionLabel.Location = new System.Drawing.Point(-1, 377);
             this.VersionLabel.Name = "VersionLabel";
             this.VersionLabel.Size = new System.Drawing.Size(224, 13);
             this.VersionLabel.TabIndex = 0;
@@ -72,7 +72,7 @@
             // UpdateLinkLabel
             // 
             this.UpdateLinkLabel.AutoSize = true;
-            this.UpdateLinkLabel.Location = new System.Drawing.Point(218, 395);
+            this.UpdateLinkLabel.Location = new System.Drawing.Point(229, 377);
             this.UpdateLinkLabel.Name = "UpdateLinkLabel";
             this.UpdateLinkLabel.Size = new System.Drawing.Size(179, 13);
             this.UpdateLinkLabel.TabIndex = 1;
@@ -104,7 +104,7 @@
             // 
             // ReturnButton
             // 
-            this.ReturnButton.Location = new System.Drawing.Point(5, 362);
+            this.ReturnButton.Location = new System.Drawing.Point(10, 344);
             this.ReturnButton.Name = "ReturnButton";
             this.ReturnButton.Size = new System.Drawing.Size(120, 30);
             this.ReturnButton.TabIndex = 4;
@@ -114,7 +114,7 @@
             // 
             // ApplyButton
             // 
-            this.ApplyButton.Location = new System.Drawing.Point(277, 362);
+            this.ApplyButton.Location = new System.Drawing.Point(277, 344);
             this.ApplyButton.Name = "ApplyButton";
             this.ApplyButton.Size = new System.Drawing.Size(120, 30);
             this.ApplyButton.TabIndex = 5;
@@ -125,7 +125,7 @@
             // SoundEffectsCheckBox
             // 
             this.SoundEffectsCheckBox.AutoSize = true;
-            this.SoundEffectsCheckBox.Location = new System.Drawing.Point(6, 111);
+            this.SoundEffectsCheckBox.Location = new System.Drawing.Point(6, 134);
             this.SoundEffectsCheckBox.Name = "SoundEffectsCheckBox";
             this.SoundEffectsCheckBox.Size = new System.Drawing.Size(92, 17);
             this.SoundEffectsCheckBox.TabIndex = 6;
@@ -160,10 +160,7 @@
             // 
             this.NoteConversionMode.FormattingEnabled = true;
             this.NoteConversionMode.Items.AddRange(new object[] {
-            "Fixed Octaves",
-            "Non-Fixed Octaves",
-            "Fixed Octaves (Old Note Conversion)",
-            "Non-Fixed Octaves (Old Note Conversion)",
+            "2.0",
             "Off"});
             this.NoteConversionMode.Location = new System.Drawing.Point(172, 15);
             this.NoteConversionMode.Name = "NoteConversionMode";
@@ -183,6 +180,7 @@
             // 
             // SettingsGroupBox
             // 
+            this.SettingsGroupBox.Controls.Add(this.LiveMidiCheckBox);
             this.SettingsGroupBox.Controls.Add(this.OffAutoConsoleRadio);
             this.SettingsGroupBox.Controls.Add(this.AutoConsoleLabel);
             this.SettingsGroupBox.Controls.Add(this.OldAutoConsoleRadio);
@@ -194,15 +192,26 @@
             this.SettingsGroupBox.Controls.Add(this.SoundEffectsCheckBox);
             this.SettingsGroupBox.Location = new System.Drawing.Point(10, 12);
             this.SettingsGroupBox.Name = "SettingsGroupBox";
-            this.SettingsGroupBox.Size = new System.Drawing.Size(387, 171);
+            this.SettingsGroupBox.Size = new System.Drawing.Size(387, 194);
             this.SettingsGroupBox.TabIndex = 12;
             this.SettingsGroupBox.TabStop = false;
             this.SettingsGroupBox.Text = "Settings";
             // 
+            // LiveMidiCheckBox
+            // 
+            this.LiveMidiCheckBox.AutoSize = true;
+            this.LiveMidiCheckBox.Location = new System.Drawing.Point(6, 111);
+            this.LiveMidiCheckBox.Name = "LiveMidiCheckBox";
+            this.LiveMidiCheckBox.Size = new System.Drawing.Size(207, 17);
+            this.LiveMidiCheckBox.TabIndex = 14;
+            this.LiveMidiCheckBox.Text = "Show Live Midi Input Menu on Startup\r\n";
+            this.LiveMidiCheckBox.UseVisualStyleBackColor = true;
+            this.LiveMidiCheckBox.CheckedChanged += new System.EventHandler(this.LiveMidiCheckBox_CheckedChanged);
+            // 
             // OffAutoConsoleRadio
             // 
             this.OffAutoConsoleRadio.AutoSize = true;
-            this.OffAutoConsoleRadio.Location = new System.Drawing.Point(107, 148);
+            this.OffAutoConsoleRadio.Location = new System.Drawing.Point(104, 171);
             this.OffAutoConsoleRadio.Name = "OffAutoConsoleRadio";
             this.OffAutoConsoleRadio.Size = new System.Drawing.Size(39, 17);
             this.OffAutoConsoleRadio.TabIndex = 13;
@@ -214,7 +223,7 @@
             // AutoConsoleLabel
             // 
             this.AutoConsoleLabel.AutoSize = true;
-            this.AutoConsoleLabel.Location = new System.Drawing.Point(6, 131);
+            this.AutoConsoleLabel.Location = new System.Drawing.Point(3, 154);
             this.AutoConsoleLabel.Name = "AutoConsoleLabel";
             this.AutoConsoleLabel.Size = new System.Drawing.Size(138, 13);
             this.AutoConsoleLabel.TabIndex = 12;
@@ -223,7 +232,7 @@
             // OldAutoConsoleRadio
             // 
             this.OldAutoConsoleRadio.AutoSize = true;
-            this.OldAutoConsoleRadio.Location = new System.Drawing.Point(6, 148);
+            this.OldAutoConsoleRadio.Location = new System.Drawing.Point(3, 171);
             this.OldAutoConsoleRadio.Name = "OldAutoConsoleRadio";
             this.OldAutoConsoleRadio.Size = new System.Drawing.Size(41, 17);
             this.OldAutoConsoleRadio.TabIndex = 11;
@@ -235,7 +244,7 @@
             // NewAutoConsoleRadio
             // 
             this.NewAutoConsoleRadio.AutoSize = true;
-            this.NewAutoConsoleRadio.Location = new System.Drawing.Point(53, 148);
+            this.NewAutoConsoleRadio.Location = new System.Drawing.Point(50, 171);
             this.NewAutoConsoleRadio.Name = "NewAutoConsoleRadio";
             this.NewAutoConsoleRadio.Size = new System.Drawing.Size(47, 17);
             this.NewAutoConsoleRadio.TabIndex = 10;
@@ -246,7 +255,6 @@
             // 
             // AdvancedGroupBox
             // 
-            this.AdvancedGroupBox.Controls.Add(this.DebugModeCheckBox);
             this.AdvancedGroupBox.Controls.Add(this.NoteCooldownLabel);
             this.AdvancedGroupBox.Controls.Add(this.NoteCooldownNumeric);
             this.AdvancedGroupBox.Controls.Add(this.NoteCountNumeric);
@@ -255,24 +263,12 @@
             this.AdvancedGroupBox.Controls.Add(this.LowestNoteNumeric);
             this.AdvancedGroupBox.Controls.Add(this.NoteConversionLabel);
             this.AdvancedGroupBox.Controls.Add(this.NoteConversionMode);
-            this.AdvancedGroupBox.Location = new System.Drawing.Point(10, 189);
+            this.AdvancedGroupBox.Location = new System.Drawing.Point(10, 212);
             this.AdvancedGroupBox.Name = "AdvancedGroupBox";
-            this.AdvancedGroupBox.Size = new System.Drawing.Size(387, 167);
+            this.AdvancedGroupBox.Size = new System.Drawing.Size(387, 126);
             this.AdvancedGroupBox.TabIndex = 13;
             this.AdvancedGroupBox.TabStop = false;
             this.AdvancedGroupBox.Text = "Advanced Parameters";
-            // 
-            // DebugModeCheckBox
-            // 
-            this.DebugModeCheckBox.AutoSize = true;
-            this.DebugModeCheckBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DebugModeCheckBox.Location = new System.Drawing.Point(9, 128);
-            this.DebugModeCheckBox.Name = "DebugModeCheckBox";
-            this.DebugModeCheckBox.Size = new System.Drawing.Size(167, 21);
-            this.DebugModeCheckBox.TabIndex = 17;
-            this.DebugModeCheckBox.Text = "Debug Mode (Logger)";
-            this.DebugModeCheckBox.UseVisualStyleBackColor = true;
-            this.DebugModeCheckBox.CheckedChanged += new System.EventHandler(this.DebugModeCheckBox_CheckedChanged);
             // 
             // NoteCooldownLabel
             // 
@@ -347,7 +343,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(409, 417);
+            this.ClientSize = new System.Drawing.Size(409, 395);
             this.Controls.Add(this.AdvancedGroupBox);
             this.Controls.Add(this.SettingsGroupBox);
             this.Controls.Add(this.ApplyButton);
@@ -393,10 +389,10 @@
         private System.Windows.Forms.Label NoteCountLabel;
         private System.Windows.Forms.Label NoteCooldownLabel;
         private System.Windows.Forms.NumericUpDown NoteCooldownNumeric;
-        private System.Windows.Forms.CheckBox DebugModeCheckBox;
         private System.Windows.Forms.RadioButton NewAutoConsoleRadio;
         private System.Windows.Forms.RadioButton OldAutoConsoleRadio;
         private System.Windows.Forms.Label AutoConsoleLabel;
         private System.Windows.Forms.RadioButton OffAutoConsoleRadio;
+        private System.Windows.Forms.CheckBox LiveMidiCheckBox;
     }
 }

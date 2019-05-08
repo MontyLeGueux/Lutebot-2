@@ -1,4 +1,4 @@
-﻿using LuteBot.Logger;
+﻿using LuteBot.Config;
 using LuteBot.TrackSelection;
 using Sanford.Multimedia.Midi;
 using System;
@@ -19,15 +19,13 @@ namespace LuteBot.Core.Midi
         private Sequencer sequencer;
         private MordhauOutDevice mordhauOutDevice;
         private TrackSelectionManager trackSelectionManager;
-        private ActionManager actionManager;
 
         private bool isPlaying;
 
-        public MidiPlayer(ActionManager actionManager, ConfigManager configManager, TrackSelectionManager trackSelectionManager)
+        public MidiPlayer(TrackSelectionManager trackSelectionManager)
         {
             isPlaying = false;
-            mordhauOutDevice = new MordhauOutDevice(configManager, actionManager);
-            this.configManager = configManager;
+            mordhauOutDevice = new MordhauOutDevice();
             this.trackSelectionManager = trackSelectionManager;
             sequence = new Sequence
             {
@@ -50,7 +48,6 @@ namespace LuteBot.Core.Midi
                 outDevice = new OutputDevice(0);
                 sequence.LoadCompleted += HandleLoadCompleted;
             }
-            this.actionManager = actionManager;
         }
 
         public void ResetDevice()
@@ -177,7 +174,7 @@ namespace LuteBot.Core.Midi
         {
             foreach (ChannelMessage message in e.Messages)
             {
-                if (bool.Parse(configManager.GetProperty("SoundEffects").Code) && !disposed)
+                if (ConfigManager.GetBooleanProperty(PropertyItem.SoundEffects) && !disposed)
                 {
                     outDevice.Send(message);
                 }
@@ -186,7 +183,7 @@ namespace LuteBot.Core.Midi
 
         private void HandleChased(object sender, ChasedEventArgs e)
         {
-            if (bool.Parse(configManager.GetProperty("SoundEffects").Code) && !disposed)
+            if (ConfigManager.GetBooleanProperty(PropertyItem.SoundEffects) && !disposed)
             {
                 foreach (ChannelMessage message in e.Messages)
                 {
@@ -201,10 +198,9 @@ namespace LuteBot.Core.Midi
 
         private void HandleChannelMessagePlayed(object sender, ChannelMessageEventArgs e)
         {
-            GlobalLogger.Log("LuteBotForm", LoggerManager.LoggerLevel.Medium, "Channel message incoming, Track id = " + e.TrackId);
-            if (configManager.GetProperty("NoteConversionMode").Code != "4")
+            if (ConfigManager.GetProperty(PropertyItem.NoteConversionMode) != "1")
             {
-                if (bool.Parse(configManager.GetProperty("SoundEffects").Code) && !disposed)
+                if (ConfigManager.GetBooleanProperty(PropertyItem.SoundEffects) && !disposed)
                 {
                     outDevice.Send(mordhauOutDevice.FilterNote(trackSelectionManager.FilterMidiEvent(e.Message)));
                 }

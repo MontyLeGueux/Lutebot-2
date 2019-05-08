@@ -1,4 +1,6 @@
-﻿using LuteBot.Saving;
+﻿using LuteBot.Config;
+using LuteBot.IO.Files;
+using LuteBot.IO.KB;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -15,23 +17,19 @@ namespace LuteBot
 {
     public partial class KeyBindingForm : Form
     {
-        private ConfigManager configManager;
         private string currentKey;
 
         private readonly string keyChangeString = "[input a key or ESC to cancel]";
         public KeyBindingForm()
         {
             InitializeComponent();
-            configManager = new ConfigManager();
             InitPropertiesList();
             RefreshConfigFoundLabel();
         }
 
         private void SetConfig_Click(object sender, EventArgs e)
         {
-            configManager.RefreshConfigAndSave();
-            configManager.ChangeProperty("MordhauInputIniLocation", SaveManager.SetMordhauConfigLocation());
-            configManager.Save();
+            ConfigManager.SetProperty(PropertyItem.MordhauInputIniLocation, SaveManager.SetMordhauConfigLocation());
             RefreshConfigFoundLabel();
         }
 
@@ -39,7 +37,7 @@ namespace LuteBot
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(SaveManager.LoadMordhauConfig(configManager.GetProperty("MordhauInputIniLocation").Code)))
+                if (string.IsNullOrWhiteSpace(SaveManager.LoadMordhauConfig(ConfigManager.GetProperty(PropertyItem.MordhauInputIniLocation))))
                 {
                     MordhauConfigLabel.Text = "Mordhau configuration file not found. Please set the location of DefaultInput.ini in the menu above.";
                 }
@@ -57,25 +55,26 @@ namespace LuteBot
         private void InitPropertiesList()
         {
             HotkeysList.Items.Clear();
-            List<ActionKey> hotkeys = configManager.GetHotkeys();
+            var hotkeys = Enum.GetValues(typeof(Keybinds));
 
             String[] row = new String[2];
-            foreach (ActionKey hotkey in hotkeys)
+            foreach (Keybinds hotkey in hotkeys)
             {
-                row[0] = hotkey.Name;
-                row[1] = hotkey.Code;
+                row[0] = hotkey.ToString();
+                row[1] = ConfigManager.GetProperty((PropertyItem)hotkey);
                 HotkeysList.Items.Add(new ListViewItem(row));
             }
         }
 
         private void CancelButton_Click(object sender, EventArgs e)
         {
+            ConfigManager.Refresh();
             this.Close();
         }
 
         private void ApplyButton_Click(object sender, EventArgs e)
         {
-            configManager.Save();
+            ConfigManager.SaveConfig();
             this.Close();
         }
 
@@ -97,7 +96,7 @@ namespace LuteBot
                     ListViewItem selectedItem = HotkeysList.SelectedItems[0];
                     Enum.TryParse<Keys>(e.KeyCode.ToString(), out tempKey);
                     selectedItem.SubItems[1].Text = tempKey.ToString();
-                    configManager.ChangeProperty(selectedItem.SubItems[0].Text, selectedItem.SubItems[1].Text);
+                    ConfigManager.SetProperty(Property.FromString(selectedItem.SubItems[0].Text), selectedItem.SubItems[1].Text);
                 }
             }
             ToggleEnableLists(true);
@@ -121,11 +120,10 @@ namespace LuteBot
 
         private void AutoConFigButton_Click(object sender, EventArgs e)
         {
-            configManager.Save();
-            configManager.ChangePropertyAndSave("UserSavedConsoleKey", configManager.GetAction("OpenConsole").Code);
-            configManager.ChangePropertyAndSave("OpenConsole", "Next");
+            ConfigManager.SetProperty(PropertyItem.UserSavedConsoleKey, ConfigManager.GetProperty(PropertyItem.OpenConsole));
+            ConfigManager.SetProperty(PropertyItem.OpenConsole, "Next");
             InitPropertiesList();
-            string configLocation = configManager.GetProperty("MordhauInputIniLocation").Code;
+            string configLocation = ConfigManager.GetProperty(PropertyItem.MordhauInputIniLocation);
             string configContent = SaveManager.LoadMordhauConfig(configLocation);
             if (configContent != null)
             {
@@ -153,20 +151,20 @@ namespace LuteBot
 
         private void RevertAutoConfig_Click(object sender, EventArgs e)
         {
-            configManager.RefreshConfig();
-            string configLocation = configManager.GetProperty("MordhauInputIniLocation").Code;
+            ConfigManager.Refresh();
+            string configLocation = ConfigManager.GetProperty(PropertyItem.MordhauInputIniLocation);
             string configContent = SaveManager.LoadMordhauConfig(configLocation);
             if (configContent.Contains("+ConsoleKeys=PageDown"))
             {
                 configContent = configContent.Replace("+ConsoleKeys=PageDown", "");
                 SaveManager.SaveMordhauConfig(configLocation, configContent);
             }
-            configManager.ChangePropertyAndSave("OpenConsole", configManager.GetProperty("UserSavedConsoleKey").Code);
+            ConfigManager.SetProperty(PropertyItem.OpenConsole, ConfigManager.GetProperty(PropertyItem.UserSavedConsoleKey));
             InitPropertiesList();
         }
         private void OpenConfig_Click(object sender, EventArgs e)
         {
-            string path = configManager.GetProperty("MordhauInputIniLocation").Code;
+            string path = ConfigManager.GetProperty(PropertyItem.MordhauInputIniLocation);
             string cmd = "explorer.exe";
             string arg = "/select, " + path;
             Process.Start(cmd, arg);

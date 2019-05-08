@@ -1,4 +1,6 @@
-﻿using Sanford.Multimedia.Midi;
+﻿using LuteBot.Config;
+using LuteBot.IO.KB;
+using Sanford.Multimedia.Midi;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -17,32 +19,28 @@ namespace LuteBot.Core
         private int highMidiNoteId = 127;
 
         private bool conversionNeeded;
-
-        private int chordPosition = 0;
+        private bool cooldownNeeded = true;
 
         public int LowMidiNoteId { get => lowMidiNoteId; set { lowMidiNoteId = value; UpdateNoteIdBounds(); } }
         public int HighMidiNoteId { get => highMidiNoteId; set { highMidiNoteId = value; UpdateNoteIdBounds(); } }
 
-        public int LowNoteId { get => lowNoteId; }
-        public int HighNoteId { get => highNoteId; }
+        public int LowNoteId { get => lowNoteId; set { ForceNoteBounds(value, true); } }
+        public int HighNoteId { get => highNoteId; set { ForceNoteBounds(value, false); } }
 
         public bool ConversionNeeded { get => conversionNeeded; }
+        public bool CooldownNeeded { get => cooldownNeeded; set => cooldownNeeded = value; }
 
-        private ConfigManager configManager;
-        private ActionManager actionManager;
         private Stopwatch stopWatch;
 
-        public MordhauOutDevice(ConfigManager configManager, ActionManager actionManager)
+        public MordhauOutDevice()
         {
-            this.configManager = configManager;
-            this.actionManager = actionManager;
             stopWatch = new Stopwatch();
         }
 
         private void UpdateNoteIdBounds()
         {
             int noteRange = highMidiNoteId - lowMidiNoteId;
-            int luteRange = configManager.GetIntegerProperty("AvaliableNoteCount");
+            int luteRange = ConfigManager.GetIntegerProperty(PropertyItem.AvaliableNoteCount);
             if (noteRange > luteRange)
             {
                 lowNoteId = ((noteRange / 2) + lowMidiNoteId) - (luteRange / 2);
@@ -57,6 +55,20 @@ namespace LuteBot.Core
                 //if the note range of the midi is lower than the lute range
                 lowNoteId = lowMidiNoteId;
                 highNoteId = highMidiNoteId;
+            }
+        }
+
+        private void ForceNoteBounds(int value, bool isLower)
+        {
+            if (isLower)
+            {
+                lowNoteId = value;
+                highNoteId = value + ConfigManager.GetIntegerProperty(PropertyItem.AvaliableNoteCount) - 1;
+            }
+            else
+            {
+                highNoteId = value;
+                lowNoteId = value - ConfigManager.GetIntegerProperty(PropertyItem.AvaliableNoteCount) - 1;
             }
         }
 
@@ -91,21 +103,28 @@ namespace LuteBot.Core
 
         public void SendNote(ChannelMessage message)
         {
-            if (message.Command == ChannelCommand.NoteOn)
+            if (message.Command == ChannelCommand.NoteOn && message.Data2 > 0)
             {
-                int noteCooldown = int.Parse(configManager.GetProperty("NoteCooldown").Code);
-                if (!stopWatch.IsRunning)
+                int noteCooldown = int.Parse(ConfigManager.GetProperty(PropertyItem.NoteCooldown));
+                if (cooldownNeeded)
                 {
-                    actionManager.PlayNote(FilterNote(message).Data1 - lowNoteId);
-                    stopWatch.Start();
+                    if (!stopWatch.IsRunning)
+                    {
+                        ActionManager.PlayNote(FilterNote(message).Data1 - lowNoteId);
+                        stopWatch.Start();
+                    }
+                    else
+                    {
+                        if (stopWatch.ElapsedMilliseconds >= noteCooldown)
+                        {
+                            ActionManager.PlayNote(FilterNote(message).Data1 - lowNoteId);
+                            stopWatch.Reset();
+                        }
+                    }
                 }
                 else
                 {
-                    if (stopWatch.ElapsedMilliseconds >= noteCooldown)
-                    {
-                        actionManager.PlayNote(FilterNote(message).Data1 - lowNoteId);
-                        stopWatch.Reset();
-                    }
+                    ActionManager.PlayNote(FilterNote(message).Data1 - lowNoteId);
                 }
             }
         }
