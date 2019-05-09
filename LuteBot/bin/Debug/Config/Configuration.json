@@ -82,7 +82,7 @@
     },
     {
       "Item": "MainWindowPos",
-      "Value": "1280|720"
+      "Value": "985|802"
     },
     {
       "Item": "SoundBoardPos",
@@ -90,7 +90,7 @@
     },
     {
       "Item": "PlayListPos",
-      "Value": "0|0"
+      "Value": "1455|599"
     },
     {
       "Item": "TrackSelectionPos",
@@ -102,7 +102,7 @@
     },
     {
       "Item": "LastPlaylistLocation",
-      "Value": null
+      "Value": "C:\\Users\\Monty\\Documents\\programming\\backups\\03-02-2019\\LuteBot\\Save tests\\PlayList2.0 no test.xml"
     },
     {
       "Item": "LastSoundBoardLocation",

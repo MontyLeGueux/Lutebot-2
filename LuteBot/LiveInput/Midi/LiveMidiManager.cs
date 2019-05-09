@@ -24,6 +24,7 @@ namespace LuteBot.LiveInput.Midi
             outDevice = new MordhauOutDevice();
             outDevice.HighMidiNoteId = 127;
             outDevice.LowMidiNoteId = 0;
+            outDevice.CooldownNeeded = false;
         }
 
         public void Dispose()

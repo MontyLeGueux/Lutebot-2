@@ -81,7 +81,7 @@ namespace LuteBot.IO.KB
             }
         }
 
-        public static void PlayNote(int noteId)
+        private static void InputCommand(int noteId)
         {
             Process[] processes = Process.GetProcessesByName("Mordhau-Win64-Shipping");
             if (AutoConsoleModeFromString(ConfigManager.GetProperty(PropertyItem.ConsoleOpenMode)) == AutoConsoleMode.New)
@@ -116,6 +116,16 @@ namespace LuteBot.IO.KB
                 Thread.Sleep(ConfigManager.GetIntegerProperty(PropertyItem.NoteCooldown));
                 PostMessage(proc.MainWindowHandle, WM_KEYUP, (int)Keys.Enter, 0);
             }
+        }
+
+        public static void PlayNote(int noteId)
+        {
+            InputCommand(noteId);
+        }
+
+        private static void InputAngle()
+        {
+
         }
     }
 }
