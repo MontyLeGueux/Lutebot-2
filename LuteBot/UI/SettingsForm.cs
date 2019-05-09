@@ -198,7 +198,8 @@ namespace LuteBot
 
         private void InitRadioButtons()
         {
-            ActionManager.AutoConsoleMode consoleMode = ActionManager.AutoConsoleModeFromString(ConfigManager.GetProperty(PropertyItem.ConsoleOpenMode));
+            Enum.TryParse<ActionManager.AutoConsoleMode>(ConfigManager.GetProperty(PropertyItem.ConsoleOpenMode), out ActionManager.AutoConsoleMode consoleMode);
+            Console.WriteLine(consoleMode);
             switch (consoleMode)
             {
                 case ActionManager.AutoConsoleMode.New:
@@ -223,7 +224,7 @@ namespace LuteBot
         {
             if (OldAutoConsoleRadio.Checked)
             {
-                ConfigManager.SetProperty(PropertyItem.ConsoleOpenMode, ActionManager.AutoConsoleModeToString(ActionManager.AutoConsoleMode.Old));
+                ConfigManager.SetProperty(PropertyItem.ConsoleOpenMode, ActionManager.AutoConsoleMode.Old.ToString());
                 NewAutoConsoleRadio.Checked = false;
                 OffAutoConsoleRadio.Checked = false;
             }
@@ -233,7 +234,7 @@ namespace LuteBot
         {
             if (NewAutoConsoleRadio.Checked)
             {
-                ConfigManager.SetProperty(PropertyItem.ConsoleOpenMode, ActionManager.AutoConsoleModeToString(ActionManager.AutoConsoleMode.New));
+                ConfigManager.SetProperty(PropertyItem.ConsoleOpenMode, ActionManager.AutoConsoleMode.New.ToString());
                 OldAutoConsoleRadio.Checked = false;
                 OffAutoConsoleRadio.Checked = false;
             }
@@ -243,7 +244,7 @@ namespace LuteBot
         {
             if (OffAutoConsoleRadio.Checked)
             {
-                ConfigManager.SetProperty(PropertyItem.ConsoleOpenMode, ActionManager.AutoConsoleModeToString(ActionManager.AutoConsoleMode.Off));
+                ConfigManager.SetProperty(PropertyItem.ConsoleOpenMode, ActionManager.AutoConsoleMode.Off.ToString());
                 NewAutoConsoleRadio.Checked = false;
                 OldAutoConsoleRadio.Checked = false;
             }

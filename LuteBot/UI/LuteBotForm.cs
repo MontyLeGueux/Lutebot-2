@@ -236,7 +236,8 @@ namespace LuteBot
             }
             else
             {
-                if (ActionManager.AutoConsoleModeFromString(ConfigManager.GetProperty(PropertyItem.ConsoleOpenMode)) == ActionManager.AutoConsoleMode.Old)
+                Enum.TryParse<ActionManager.AutoConsoleMode>(ConfigManager.GetProperty(PropertyItem.ConsoleOpenMode), out ActionManager.AutoConsoleMode consoleMode);
+                if (consoleMode == ActionManager.AutoConsoleMode.Old)
                 {
                     ActionManager.ToggleConsole(false);
                 }
@@ -391,7 +392,8 @@ namespace LuteBot
 
         private void Play()
         {
-            if (ActionManager.AutoConsoleModeFromString(ConfigManager.GetProperty(PropertyItem.ConsoleOpenMode)) == ActionManager.AutoConsoleMode.Old)
+            Enum.TryParse<ActionManager.AutoConsoleMode>(ConfigManager.GetProperty(PropertyItem.ConsoleOpenMode), out ActionManager.AutoConsoleMode consoleMode);
+            if (consoleMode == ActionManager.AutoConsoleMode.Old)
             {
                 ActionManager.ToggleConsole(true);
             }
@@ -403,7 +405,8 @@ namespace LuteBot
 
         private void Pause()
         {
-            if (ActionManager.AutoConsoleModeFromString(ConfigManager.GetProperty(PropertyItem.ConsoleOpenMode)) == ActionManager.AutoConsoleMode.Old)
+            Enum.TryParse<ActionManager.AutoConsoleMode>(ConfigManager.GetProperty(PropertyItem.ConsoleOpenMode), out ActionManager.AutoConsoleMode consoleMode);
+            if (consoleMode == ActionManager.AutoConsoleMode.Old)
             {
                 ActionManager.ToggleConsole(false);
             }

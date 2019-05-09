@@ -15,9 +15,9 @@ namespace LuteBot.IO.KB
     {
         public enum AutoConsoleMode
         {
+            Off = 0, // to make this the default value for TryParse
             Old,
             New,
-            Off
         }
 
         public const UInt32 WM_KEYDOWN = 0x0100;
@@ -26,93 +26,50 @@ namespace LuteBot.IO.KB
         [DllImport("user32.dll")]
         static extern bool PostMessage(IntPtr hWnd, UInt32 Msg, int wParam, int lParam);
 
-        private static string consoleCommand = "EQUIPMENTCOMMAND";
+        private const string CONSOLE_COMMAND = "EQUIPMENTCOMMAND";
+        private const string MORDHAU_PROCESS_NAME = "Mordhau-Win64-Shipping";
 
         private static bool consoleOn = false;
-
-        public static string AutoConsoleModeToString(AutoConsoleMode mode)
-        {
-            switch (mode)
-            {
-                case AutoConsoleMode.Old:
-                    return "Old";
-                case AutoConsoleMode.New:
-                    return "New";
-                case AutoConsoleMode.Off:
-                    return "Off";
-                default:
-                    return "Off";
-            }
-        }
-
-        public static AutoConsoleMode AutoConsoleModeFromString(string str)
-        {
-            switch (str)
-            {
-                case "Old":
-                    return AutoConsoleMode.Old;
-                case "New":
-                    return AutoConsoleMode.New;
-                case "Off":
-                    return AutoConsoleMode.Off;
-                default:
-                    return AutoConsoleMode.Off;
-            }
-        }
 
         public static void ToggleConsole(bool consoleOpen)
         {
             if (consoleOpen != consoleOn)
             {
-                Process[] processes = Process.GetProcessesByName("Mordhau-Win64-Shipping");
+                Process[] processes = Process.GetProcessesByName(MORDHAU_PROCESS_NAME);
                 foreach (Process proc in processes)
                 {
                     PostMessage(proc.MainWindowHandle, WM_KEYDOWN, (int)ConfigManager.GetKeybindProperty(PropertyItem.OpenConsole), 0);
                     if (!consoleOn)
                     {
                         PostMessage(proc.MainWindowHandle, WM_KEYDOWN, (int)ConfigManager.GetKeybindProperty(PropertyItem.OpenConsole), 0);
-                        consoleOn = true;
                     }
-                    else
-                    {
-                        consoleOn = false;
-                    }
+                    consoleOn = !consoleOn;
                 }
             }
         }
 
         private static void InputCommand(int noteId)
         {
-            Process[] processes = Process.GetProcessesByName("Mordhau-Win64-Shipping");
-            if (AutoConsoleModeFromString(ConfigManager.GetProperty(PropertyItem.ConsoleOpenMode)) == AutoConsoleMode.New)
+            Process[] processes = Process.GetProcessesByName(MORDHAU_PROCESS_NAME);
+            Enum.TryParse<AutoConsoleMode>(ConfigManager.GetProperty(PropertyItem.ConsoleOpenMode), out AutoConsoleMode consoleMode);
+
+            foreach (Process proc in processes)
             {
-                foreach (Process proc in processes)
+                if (consoleMode == AutoConsoleMode.New)
                 {
                     PostMessage(proc.MainWindowHandle, WM_KEYDOWN, (int)ConfigManager.GetKeybindProperty(PropertyItem.OpenConsole), 0);
                 }
-            }
-            foreach (char key in consoleCommand)
-            {
-                Enum.TryParse<Keys>("" + key, out Keys tempKey);
-                foreach (Process proc in processes)
+                foreach (char key in CONSOLE_COMMAND)
                 {
+                    Enum.TryParse<Keys>(key.ToString(), out Keys tempKey);
                     PostMessage(proc.MainWindowHandle, WM_KEYDOWN, (int)tempKey, 0);
                 }
-            }
-            foreach (Process proc in processes)
-            {
                 PostMessage(proc.MainWindowHandle, WM_KEYDOWN, (int)Keys.Space, 0);
-            }
-            foreach (char key in noteId.ToString())
-            {
-                Enum.TryParse<Keys>("NumPad" + key, out Keys tempKey);
-                foreach (Process proc in processes)
+                foreach (char key in noteId.ToString())
                 {
+                    Enum.TryParse<Keys>("NumPad" + key, out Keys tempKey);
                     PostMessage(proc.MainWindowHandle, WM_KEYDOWN, (int)tempKey, 0);
                 }
-            }
-            foreach (Process proc in processes)
-            {
                 Thread.Sleep(ConfigManager.GetIntegerProperty(PropertyItem.NoteCooldown));
                 PostMessage(proc.MainWindowHandle, WM_KEYUP, (int)Keys.Enter, 0);
             }
