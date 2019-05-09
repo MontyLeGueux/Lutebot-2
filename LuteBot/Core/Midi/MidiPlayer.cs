@@ -198,22 +198,25 @@ namespace LuteBot.Core.Midi
 
         private void HandleChannelMessagePlayed(object sender, ChannelMessageEventArgs e)
         {
-            if (ConfigManager.GetProperty(PropertyItem.NoteConversionMode) != "1")
+            ChannelMessage msg = trackSelectionManager.FilterMidiEvent(e.Message);
+            if (msg != null)
             {
-                if (ConfigManager.GetBooleanProperty(PropertyItem.SoundEffects) && !disposed)
+                if (ConfigManager.GetProperty(PropertyItem.NoteConversionMode) != "1")
                 {
-                    outDevice.Send(mordhauOutDevice.FilterNote(trackSelectionManager.FilterMidiEvent(e.Message)));
+                    if (ConfigManager.GetBooleanProperty(PropertyItem.SoundEffects) && !disposed)
+                    {
+                        outDevice.Send(mordhauOutDevice.FilterNote(msg));
+                    }
+                    else
+                    {
+                        mordhauOutDevice.SendNote(msg);
+                    }
                 }
                 else
                 {
-                    mordhauOutDevice.SendNote(trackSelectionManager.FilterMidiEvent(e.Message));
+                    outDevice.Send(msg);
                 }
             }
-            else
-            {
-                outDevice.Send(trackSelectionManager.FilterMidiEvent(e.Message));
-            }
-
         }
 
         private void HandlePlayingCompleted(object sender, EventArgs e)

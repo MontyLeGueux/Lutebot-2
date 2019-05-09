@@ -103,7 +103,7 @@ namespace LuteBot.Core
 
         public void SendNote(ChannelMessage message)
         {
-            if (message.Command == ChannelCommand.NoteOn && message.Data2 > 0)
+            if (message != null && message.Command == ChannelCommand.NoteOn && message.Data2 > 0)
             {
                 int noteCooldown = int.Parse(ConfigManager.GetProperty(PropertyItem.NoteCooldown));
                 if (cooldownNeeded)
