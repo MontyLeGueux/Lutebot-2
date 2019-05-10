@@ -20,6 +20,7 @@ namespace LuteBot.Core
 
         private bool conversionNeeded;
         private bool cooldownNeeded = true;
+        private bool muteOutOfRange = false;
 
         public int LowMidiNoteId { get => lowMidiNoteId; set { lowMidiNoteId = value; UpdateNoteIdBounds(); } }
         public int HighMidiNoteId { get => highMidiNoteId; set { highMidiNoteId = value; UpdateNoteIdBounds(); } }
@@ -29,6 +30,7 @@ namespace LuteBot.Core
 
         public bool ConversionNeeded { get => conversionNeeded; }
         public bool CooldownNeeded { get => cooldownNeeded; set => cooldownNeeded = value; }
+        public bool MuteOutOfRange { get => muteOutOfRange; set => muteOutOfRange = value; }
 
         private Stopwatch stopWatch;
 
@@ -76,24 +78,32 @@ namespace LuteBot.Core
         {
             if (conversionNeeded && (message.Command == ChannelCommand.NoteOn || message.Command == ChannelCommand.NoteOff))
             {
+                bool outOfRange = false;
                 int newData1 = 0;
                 int oldData1 = message.Data1;
+                int velocity = message.Data2;
                 if (oldData1 < lowNoteId)
                 {
                     newData1 = lowNoteId + (oldData1 % 12);
+                    outOfRange = true;
                 }
                 else
                 {
                     if (oldData1 > highNoteId)
                     {
                         newData1 = (highNoteId - 11) + (oldData1 % 12);
+                        outOfRange = true;
                     }
                     else
                     {
                         newData1 = oldData1;
                     }
                 }
-                return new ChannelMessage(message.Command, message.MidiChannel, newData1, message.Data2);
+                if (outOfRange && muteOutOfRange)
+                {
+                    velocity = 0;
+                }
+                return new ChannelMessage(message.Command, message.MidiChannel, newData1, velocity);
             }
             else
             {
@@ -103,6 +113,7 @@ namespace LuteBot.Core
 
         public void SendNote(ChannelMessage message)
         {
+            ChannelMessage filterResult;
             if (message.Command == ChannelCommand.NoteOn && message.Data2 > 0)
             {
                 int noteCooldown = int.Parse(ConfigManager.GetProperty(PropertyItem.NoteCooldown));
@@ -110,21 +121,34 @@ namespace LuteBot.Core
                 {
                     if (!stopWatch.IsRunning)
                     {
-                        ActionManager.PlayNote(FilterNote(message).Data1 - lowNoteId);
+                        filterResult = FilterNote(message);
+                        if (message.Data2 > 0)
+                        {
+                            ActionManager.PlayNote(filterResult.Data1 - lowNoteId);
+                        }
+
                         stopWatch.Start();
                     }
                     else
                     {
                         if (stopWatch.ElapsedMilliseconds >= noteCooldown)
                         {
-                            ActionManager.PlayNote(FilterNote(message).Data1 - lowNoteId);
+                            filterResult = FilterNote(message);
+                            if (message.Data2 > 0)
+                            {
+                                ActionManager.PlayNote(filterResult.Data1 - lowNoteId);
+                            }
                             stopWatch.Reset();
                         }
                     }
                 }
                 else
                 {
-                    ActionManager.PlayNote(FilterNote(message).Data1 - lowNoteId);
+                    filterResult = FilterNote(message);
+                    if (message.Data2 > 0)
+                    {
+                        ActionManager.PlayNote(filterResult.Data1 - lowNoteId);
+                    }
                 }
             }
         }

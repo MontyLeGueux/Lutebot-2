@@ -43,7 +43,8 @@
         SoundBoardPos,
         PlayListPos,
         TrackSelectionPos,
-        LiveMidiPos
-
+        LiveMidiPos,
+        VirtualKeyboardBinds,
+        LiveMidiListen
     }
 }

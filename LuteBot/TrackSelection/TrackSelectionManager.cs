@@ -88,21 +88,29 @@ namespace LuteBot.TrackSelection
             EventHelper();
         }
 
-        public ChannelMessage FilterMidiEvent(ChannelMessage message)
+        public ChannelMessage FilterMidiEvent(ChannelMessage message, int trackId)
         {
             ChannelMessage newMessage = message;
-            if (message.Command == ChannelCommand.NoteOn)
+            TrackItem track = midiTracks.FirstOrDefault(x => x.Id == trackId);
+            if (track != null && track.Active)
             {
-                foreach (MidiChannelItem channelItem in midiChannels)
+                if (message.Command == ChannelCommand.NoteOn)
                 {
-                    if (channelItem.Id == message.MidiChannel)
+                    foreach (MidiChannelItem channelItem in midiChannels)
                     {
-                        if (!(channelItem.Active || activateAllChannels))
+                        if (channelItem.Id == message.MidiChannel)
                         {
-                            newMessage = null;
+                            if (!(channelItem.Active || activateAllChannels))
+                            {
+                                newMessage = new ChannelMessage(ChannelCommand.NoteOn, message.MidiChannel, message.Data1, 0);
+                            }
                         }
                     }
                 }
+            }
+            else
+            {
+                newMessage = new ChannelMessage(ChannelCommand.NoteOn, message.MidiChannel, message.Data1, 0);
             }
             return newMessage;
         }

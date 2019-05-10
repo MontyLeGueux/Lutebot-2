@@ -41,6 +41,12 @@ namespace LuteBot.Soundboard
             }
         }
 
+        public void Dispose()
+        {
+            soundBoard = new SoundBoard();
+            soundBoard.SoundBoardItems = new SoundBoardItem[9];
+        }
+
         public SoundBoardManager(int size)
         {
             soundBoard = new SoundBoard();

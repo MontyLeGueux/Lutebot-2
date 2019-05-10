@@ -18,14 +18,18 @@ namespace LuteBot.UI
     {
         private LiveMidiManager liveInputManager;
         private bool on = false;
+        private bool keySetting = false;
+        private int keyIndex = -1;
+        private string keybindLabelText = "Press a key to bind the note [noteId]";
 
         private string octavesCovered = "Octaves covered by mordhau [first] to [last]";
 
-        public LiveInputForm()
+        public LiveInputForm(LiveMidiManager liveMidiManager)
         {
             InitializeComponent();
-            liveInputManager = new LiveMidiManager();
+            liveInputManager = liveMidiManager;
             liveInputManager.ChannelEventReceived += ChannelEventHandler;
+            liveInputManager.RecordingStateChanged += RefreshListeningButton;
             DeviceCount();
             int lastDeviceUsed = ConfigManager.GetIntegerProperty(PropertyItem.LastMidiDeviceUsed);
             if (lastDeviceUsed > -1 && lastDeviceUsed < liveInputManager.DeviceCount)
@@ -39,6 +43,34 @@ namespace LuteBot.UI
                 liveInputManager.ForceLowBound(lastMidiLowBoundUSed);
             }
             RefreshOctaveLabel();
+            KeybindLabel.Text = "";
+            InitPiano();
+        }
+
+        private void RefreshListeningButton(object sender, EventArgs e)
+        {
+            if (!liveInputManager.Recording)
+            {
+                OnOffButton.Text = "Off";
+                OnOffButton.BackColor = Color.FromArgb(255, 128, 128);
+            }
+            else
+            {
+                OnOffButton.Text = "On";
+                OnOffButton.BackColor = Color.FromArgb(128, 255, 128);
+            }
+        }
+
+        private void InitPiano()
+        {
+            int i = 0;
+            foreach (Keys key in liveInputManager.Binds)
+            {
+                PianoControl.ChangePianoKeyBind(i, $@"{CodeToNote(i + liveInputManager.OutDevice.LowNoteId)} :
+{key}");
+                i++;
+            }
+            PianoControl.Refresh();
         }
 
         private string CodeToNote(int noteCode)
@@ -95,16 +127,19 @@ namespace LuteBot.UI
         private void RefreshOctaveLabel()
         {
             MordhauOctavesRangeLabel.Text = octavesCovered.Replace("[first]", CodeToNote(liveInputManager.OutDevice.LowNoteId)).Replace("[last]", CodeToNote(liveInputManager.OutDevice.HighNoteId));
+            InitPiano();
         }
 
         private void DeviceCount()
         {
+            DeviceComboBox.Items.Add(new MidiDeviceItem() { Id = -1, Name = "Keyboard Mode" });
             int count = liveInputManager.DeviceCount;
             for (int i = 0; i < count; i++)
             {
                 string name = InputDevice.GetDeviceCapabilities(i).name;
                 DeviceComboBox.Items.Add(new MidiDeviceItem() { Id = i, Name = name });
             }
+
         }
 
         private void ChannelEventHandler(object sender, ChannelMessageEventArgs e)
@@ -114,33 +149,43 @@ namespace LuteBot.UI
 
         private void PianoControl_PianoKeyDown(object sender, Sanford.Multimedia.Midi.UI.PianoKeyEventArgs e)
         {
-
+            if (!keySetting)
+            {
+                keySetting = !keySetting;
+                keyIndex = e.NoteID;
+                PianoControl.Enabled = false;
+                KeybindLabel.Text = keybindLabelText.Replace("[noteId]", e.NoteID.ToString());
+            }
         }
 
         private void OnOffButton_Click(object sender, EventArgs e)
         {
-            if (on)
+            if (liveInputManager.Recording)
             {
-                OnOffButton.Text = "Off";
                 liveInputManager.Off();
-                OnOffButton.BackColor = Color.FromArgb(255, 128, 128);
             }
             else
             {
-                OnOffButton.Text = "On";
                 liveInputManager.On();
-                OnOffButton.BackColor = Color.FromArgb(128, 255, 128);
             }
-            on = !on;
         }
 
         private void DeviceComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             try
             {
-                liveInputManager.SetMidiDevice((DeviceComboBox.SelectedItem as MidiDeviceItem).Id);
-                MidiDeviceStatusLabel.Text = $@"Connected to device
+                if (DeviceComboBox.SelectedIndex != 0)
+                {
+                    liveInputManager.SetMidiDevice((DeviceComboBox.SelectedItem as MidiDeviceItem).Id);
+                    MidiDeviceStatusLabel.Text = $@"Connected to device
 {(DeviceComboBox.SelectedItem as MidiDeviceItem).Id}";
+                }
+                else
+                {
+                    liveInputManager.KeyboardMode = true;
+                    MidiDeviceStatusLabel.Text = $@"Keyboard mode enabled";
+                }
+
             }
             catch (Exception ex)
             {
@@ -164,6 +209,7 @@ namespace LuteBot.UI
             {
                 liveInputManager.ForceLowBound(liveInputManager.OutDevice.LowNoteId - 12);
                 RefreshOctaveLabel();
+                InitPiano();
             }
         }
 
@@ -173,7 +219,26 @@ namespace LuteBot.UI
             {
                 liveInputManager.ForceLowBound(liveInputManager.OutDevice.LowNoteId + 12);
                 RefreshOctaveLabel();
+                InitPiano();
             }
+        }
+
+        private void LiveInputForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (keySetting)
+            {
+                keySetting = !keySetting;
+                PianoControl.ChangePianoKeyBind(keyIndex, $@"{CodeToNote(keyIndex + liveInputManager.OutDevice.LowNoteId)} :
+{e.KeyData.ToString()}");
+                PianoControl.Enabled = true;
+                KeybindLabel.Text = "";
+                liveInputManager.Binds.Insert(keyIndex, e.KeyData);
+            }
+        }
+
+        private void MuteCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            liveInputManager.OutDevice.MuteOutOfRange = MuteCheckBox.Checked;
         }
     }
 }

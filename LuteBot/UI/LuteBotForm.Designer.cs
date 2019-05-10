@@ -255,7 +255,7 @@ namespace LuteBot
             this.EndTimeLabel.Name = "EndTimeLabel";
             this.EndTimeLabel.Size = new System.Drawing.Size(34, 13);
             this.EndTimeLabel.TabIndex = 10;
-            this.EndTimeLabel.Text = "03:07";
+            this.EndTimeLabel.Text = "00:00";
             // 
             // LuteBotForm
             // 

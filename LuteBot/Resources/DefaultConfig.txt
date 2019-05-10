@@ -102,11 +102,11 @@
     },
     {
       "Item": "LastPlaylistLocation",
-      "Value": null
+      "Value": ""
     },
     {
       "Item": "LastSoundBoardLocation",
-      "Value": null
+      "Value": ""
     },
     {
       "Item": "LastMidiDeviceUsed",
@@ -115,6 +115,14 @@
 	{
       "Item": "LastMidiLowBoundUsed",
       "Value": "-1"
+    }
+	,{
+      "Item": "VirtualKeyboardBinds",
+      "Value": ""
+    },
+	{
+      "Item": "LiveMidiListen",
+      "Value": "Decimal"
     }
   ]
 }

@@ -196,6 +196,7 @@ namespace LuteBot
             ConfigManager.SetProperty(PropertyItem.LastPlaylistLocation, playListManager.playlist.Path);
             WindowPositionUtils.UpdateBounds(PropertyItem.PlayListPos, new Point() { X = Left, Y = Top });
             ConfigManager.SaveConfig();
+            playListManager.Dispose();
         }
 
         private void LoadPlayListButton_Click(object sender, EventArgs e)

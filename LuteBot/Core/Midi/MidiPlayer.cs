@@ -202,18 +202,17 @@ namespace LuteBot.Core.Midi
             {
                 if (ConfigManager.GetBooleanProperty(PropertyItem.SoundEffects) && !disposed)
                 {
-                    outDevice.Send(mordhauOutDevice.FilterNote(trackSelectionManager.FilterMidiEvent(e.Message)));
+                    outDevice.Send(mordhauOutDevice.FilterNote(trackSelectionManager.FilterMidiEvent(e.Message, e.TrackId)));
                 }
                 else
                 {
-                    mordhauOutDevice.SendNote(trackSelectionManager.FilterMidiEvent(e.Message));
+                    mordhauOutDevice.SendNote(trackSelectionManager.FilterMidiEvent(e.Message, e.TrackId));
                 }
             }
             else
             {
-                outDevice.Send(trackSelectionManager.FilterMidiEvent(e.Message));
+                outDevice.Send(trackSelectionManager.FilterMidiEvent(e.Message, e.TrackId));
             }
-
         }
 
         private void HandlePlayingCompleted(object sender, EventArgs e)

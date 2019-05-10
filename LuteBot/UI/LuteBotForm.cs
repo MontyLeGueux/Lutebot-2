@@ -2,6 +2,7 @@
 using LuteBot.Core;
 using LuteBot.Core.Midi;
 using LuteBot.IO.KB;
+using LuteBot.LiveInput.Midi;
 using LuteBot.OnlineSync;
 using LuteBot.playlist;
 using LuteBot.Soundboard;
@@ -61,6 +62,7 @@ namespace LuteBot
         static SoundBoardManager soundBoardManager;
         static TrackSelectionManager trackSelectionManager;
         static OnlineSyncManager onlineManager;
+        static LiveMidiManager liveMidiManager;
 
         bool closing = false;
 
@@ -82,6 +84,8 @@ namespace LuteBot
             hotkeyManager.PreviousKeyPressed += new EventHandler(PreviousButton_Click);
             trackSelectionManager.OutDeviceResetRequest += new EventHandler(ResetDevice);
             trackSelectionManager.ToggleTrackRequest += new EventHandler<TrackItem>(ToggleTrack);
+            liveMidiManager = new LiveMidiManager();
+            hotkeyManager.LiveInputManager = liveMidiManager;
 
             PlayButton.Enabled = false;
             StopButton.Enabled = false;
@@ -280,7 +284,7 @@ namespace LuteBot
             }
             if (ConfigManager.GetBooleanProperty(PropertyItem.LiveMidi))
             {
-                liveInputForm = new LiveInputForm();
+                liveInputForm = new LiveInputForm(liveMidiManager);
                 Point coords = WindowPositionUtils.CheckPosition(ConfigManager.GetCoordsProperty(PropertyItem.LiveMidiPos));
                 liveInputForm.Show();
                 liveInputForm.Top = coords.Y;
@@ -372,20 +376,24 @@ namespace LuteBot
 
         private void PlayButton_Click(object sender, EventArgs e)
         {
-            if (isDonePlaying)
+            if (PlayButton.Enabled)
             {
-                player.Stop();
-                player.Play();
-                playButtonIsPlaying = false;
-                isDonePlaying = false;
-            }
-            if (!playButtonIsPlaying)
-            {
-                Play();
-            }
-            else
-            {
-                Pause();
+
+                if (isDonePlaying)
+                {
+                    player.Stop();
+                    player.Play();
+                    playButtonIsPlaying = false;
+                    isDonePlaying = false;
+                }
+                if (!playButtonIsPlaying)
+                {
+                    Play();
+                }
+                else
+                {
+                    Pause();
+                }
             }
         }
 
@@ -457,22 +465,28 @@ namespace LuteBot
 
         private void NextButton_Click(object sender, EventArgs e)
         {
-            Pause();
-            playList.Next();
-            autoplay = true;
-            LoadHelper(playList.Get(playList.CurrentTrackIndex));
-            playButtonIsPlaying = true;
-            isDonePlaying = false;
+            if (NextButton.Enabled)
+            {
+                Pause();
+                playList.Next();
+                autoplay = true;
+                LoadHelper(playList.Get(playList.CurrentTrackIndex));
+                playButtonIsPlaying = true;
+                isDonePlaying = false;
+            }
         }
 
         private void PreviousButton_Click(object sender, EventArgs e)
         {
-            Pause();
-            playList.Previous();
-            autoplay = true;
-            LoadHelper(playList.Get(playList.CurrentTrackIndex));
-            playButtonIsPlaying = true;
-            isDonePlaying = false;
+            if (PreviousButton.Enabled)
+            {
+                Pause();
+                playList.Previous();
+                autoplay = true;
+                LoadHelper(playList.Get(playList.CurrentTrackIndex));
+                playButtonIsPlaying = true;
+                isDonePlaying = false;
+            }
         }
 
         private void OnlineSyncToolStripMenuItem_Click(object sender, EventArgs e)
@@ -523,7 +537,7 @@ namespace LuteBot
         {
             if (liveInputForm == null || liveInputForm.IsDisposed)
             {
-                liveInputForm = new LiveInputForm();
+                liveInputForm = new LiveInputForm(liveMidiManager);
                 Point coords = WindowPositionUtils.CheckPosition(ConfigManager.GetCoordsProperty(PropertyItem.LiveMidiPos));
                 liveInputForm.Show();
                 liveInputForm.Top = coords.Y;

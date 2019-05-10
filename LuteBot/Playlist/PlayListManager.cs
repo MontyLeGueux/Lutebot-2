@@ -54,6 +54,14 @@ namespace LuteBot.playlist
             return playlist.MusicList.Count;
         }
 
+        public void Dispose()
+        {
+            playlist = new PlayList();
+            playlist.MusicList = new List<PlayListItem>();
+            playlist.CurrentTrackIndex = 0;
+            EventHelper(PlayListEventArgs.UpdatedComponent.UpdateNavButtons, -1);
+        }
+
         public void Next()
         {
             playlist.MusicList[playlist.CurrentTrackIndex].IsActive = false;

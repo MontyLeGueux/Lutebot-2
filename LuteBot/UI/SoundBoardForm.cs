@@ -316,6 +316,7 @@ namespace LuteBot
             ConfigManager.SetProperty(PropertyItem.LastSoundBoardLocation, soundBoardManager.LastSoundBoardLocation);
             WindowPositionUtils.UpdateBounds(PropertyItem.SoundBoardPos, new Point() { X = Left, Y = Top });
             ConfigManager.SaveConfig();
+            soundBoardManager.Dispose();
         }
     }
 }

@@ -62,7 +62,7 @@ namespace LuteBot
             this.HotkeysList.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.HotkeysList.Location = new System.Drawing.Point(12, 27);
             this.HotkeysList.Name = "HotkeysList";
-            this.HotkeysList.Size = new System.Drawing.Size(600, 123);
+            this.HotkeysList.Size = new System.Drawing.Size(600, 132);
             this.HotkeysList.TabIndex = 1;
             this.HotkeysList.UseCompatibleStateImageBehavior = false;
             this.HotkeysList.View = System.Windows.Forms.View.Details;
@@ -80,7 +80,7 @@ namespace LuteBot
             // 
             // cancelButton
             // 
-            this.cancelButton.Location = new System.Drawing.Point(12, 169);
+            this.cancelButton.Location = new System.Drawing.Point(12, 178);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(120, 30);
             this.cancelButton.TabIndex = 4;
@@ -90,7 +90,7 @@ namespace LuteBot
             // 
             // applyButton
             // 
-            this.applyButton.Location = new System.Drawing.Point(492, 169);
+            this.applyButton.Location = new System.Drawing.Point(492, 178);
             this.applyButton.Name = "applyButton";
             this.applyButton.Size = new System.Drawing.Size(120, 30);
             this.applyButton.TabIndex = 5;
@@ -133,14 +133,14 @@ namespace LuteBot
             // setUpToolStripMenuItem
             // 
             this.setUpToolStripMenuItem.Name = "setUpToolStripMenuItem";
-            this.setUpToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.setUpToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
             this.setUpToolStripMenuItem.Text = "Set up";
             this.setUpToolStripMenuItem.Click += new System.EventHandler(this.AutoConFigButton_Click);
             // 
             // revertToolStripMenuItem
             // 
             this.revertToolStripMenuItem.Name = "revertToolStripMenuItem";
-            this.revertToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.revertToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
             this.revertToolStripMenuItem.Text = "Revert";
             this.revertToolStripMenuItem.Click += new System.EventHandler(this.RevertAutoConfig_Click);
             // 
@@ -170,7 +170,7 @@ namespace LuteBot
             // MordhauConfigLabel
             // 
             this.MordhauConfigLabel.AutoSize = true;
-            this.MordhauConfigLabel.Location = new System.Drawing.Point(12, 153);
+            this.MordhauConfigLabel.Location = new System.Drawing.Point(12, 162);
             this.MordhauConfigLabel.Name = "MordhauConfigLabel";
             this.MordhauConfigLabel.Size = new System.Drawing.Size(470, 13);
             this.MordhauConfigLabel.TabIndex = 8;
@@ -181,7 +181,7 @@ namespace LuteBot
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(624, 207);
+            this.ClientSize = new System.Drawing.Size(624, 214);
             this.Controls.Add(this.MordhauConfigLabel);
             this.Controls.Add(this.applyButton);
             this.Controls.Add(this.cancelButton);

@@ -1,4 +1,5 @@
 ﻿using LuteBot.Config;
+using LuteBot.LiveInput.Midi;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,10 @@ namespace LuteBot.IO.KB
 {
     public class HotkeyManager
     {
+
+        private LiveMidiManager liveInputManager;
+
+        public LiveMidiManager LiveInputManager { get => liveInputManager; set => liveInputManager = value; }
 
         public event EventHandler PlayKeyPressed;
         public event EventHandler NextKeyPressed;
@@ -28,25 +33,48 @@ namespace LuteBot.IO.KB
                     EventHandler handler = PlayKeyPressed;
                     handler?.Invoke(this, null);
                 }
+                else
                 if (performedAction == PropertyItem.Next)
                 {
                     EventHandler handler = NextKeyPressed;
                     handler?.Invoke(this, null);
                 }
+                else
                 if (performedAction == PropertyItem.Previous)
                 {
                     EventHandler handler = PreviousKeyPressed;
                     handler?.Invoke(this, null);
                 }
+                else
                 if (performedAction == PropertyItem.OpenConsole)
                 {
                     EventHandler handler = ConsoleKeyPressed;
                     handler?.Invoke(this, null);
                 }
+                else
                 if (performedAction == PropertyItem.Ready)
                 {
                     EventHandler handler = ReadyPressed;
                     handler?.Invoke(this, null);
+                }
+                else
+                if (performedAction == PropertyItem.LiveMidiListen)
+                {
+                    if (liveInputManager.Recording)
+                    {
+                        liveInputManager.Off();
+                    }
+                    else
+                    {
+                        liveInputManager.On();
+                    }
+                }
+            }
+            else
+            {
+                if (LiveInputManager != null)
+                {
+                    LiveInputManager.HandleKeybindPressed(tempKey);
                 }
             }
         }

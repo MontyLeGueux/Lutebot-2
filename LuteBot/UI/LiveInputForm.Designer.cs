@@ -1,4 +1,7 @@
-﻿namespace LuteBot.UI
+﻿using System;
+using System.Windows.Forms;
+
+namespace LuteBot.UI
 {
     partial class LiveInputForm
     {
@@ -28,7 +31,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.PianoControl = new Sanford.Multimedia.Midi.UI.PianoControl();
             this.OnOffButton = new System.Windows.Forms.Button();
             this.DeviceComboBox = new System.Windows.Forms.ComboBox();
             this.MidiDevicesLabel = new System.Windows.Forms.Label();
@@ -37,24 +39,16 @@
             this.ReceivedEventsLabel = new System.Windows.Forms.Label();
             this.DeviceGroupBox = new System.Windows.Forms.GroupBox();
             this.SettingsGroupBox = new System.Windows.Forms.GroupBox();
+            this.MuteCheckBox = new System.Windows.Forms.CheckBox();
             this.MordhauOctavesRangeLabel = new System.Windows.Forms.Label();
             this.PlusOctaveButton = new System.Windows.Forms.Button();
             this.MinusOctaveButton = new System.Windows.Forms.Button();
+            this.PianoControl = new Sanford.Multimedia.Midi.UI.PianoControl();
+            this.label1 = new System.Windows.Forms.Label();
+            this.KeybindLabel = new System.Windows.Forms.Label();
             this.DeviceGroupBox.SuspendLayout();
             this.SettingsGroupBox.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // PianoControl
-            // 
-            this.PianoControl.HighNoteID = 24;
-            this.PianoControl.Location = new System.Drawing.Point(12, 134);
-            this.PianoControl.LowNoteID = 0;
-            this.PianoControl.Name = "PianoControl";
-            this.PianoControl.NoteOnColor = System.Drawing.Color.SkyBlue;
-            this.PianoControl.Size = new System.Drawing.Size(776, 92);
-            this.PianoControl.TabIndex = 0;
-            this.PianoControl.Text = "pianoControl1";
-            this.PianoControl.PianoKeyDown += new System.EventHandler<Sanford.Multimedia.Midi.UI.PianoKeyEventArgs>(this.PianoControl_PianoKeyDown);
             // 
             // OnOffButton
             // 
@@ -99,18 +93,18 @@
             this.MidiDeviceStatusLabel.AutoSize = true;
             this.MidiDeviceStatusLabel.Location = new System.Drawing.Point(222, 21);
             this.MidiDeviceStatusLabel.Name = "MidiDeviceStatusLabel";
-            this.MidiDeviceStatusLabel.Size = new System.Drawing.Size(102, 26);
+            this.MidiDeviceStatusLabel.Size = new System.Drawing.Size(120, 13);
             this.MidiDeviceStatusLabel.TabIndex = 7;
-            this.MidiDeviceStatusLabel.Text = "Midi Device Status :\r\nDisconnected";
+            this.MidiDeviceStatusLabel.Text = "No midi device selected";
             // 
             // ReceivedEventsLabel
             // 
             this.ReceivedEventsLabel.AutoSize = true;
-            this.ReceivedEventsLabel.Location = new System.Drawing.Point(6, 88);
+            this.ReceivedEventsLabel.Location = new System.Drawing.Point(222, 55);
             this.ReceivedEventsLabel.Name = "ReceivedEventsLabel";
-            this.ReceivedEventsLabel.Size = new System.Drawing.Size(137, 13);
+            this.ReceivedEventsLabel.Size = new System.Drawing.Size(131, 13);
             this.ReceivedEventsLabel.TabIndex = 8;
-            this.ReceivedEventsLabel.Text = "No Midi message Received";
+            this.ReceivedEventsLabel.Text = "No midi message received";
             // 
             // DeviceGroupBox
             // 
@@ -122,22 +116,34 @@
             this.DeviceGroupBox.Controls.Add(this.MidiDeviceStatusLabel);
             this.DeviceGroupBox.Location = new System.Drawing.Point(12, 9);
             this.DeviceGroupBox.Name = "DeviceGroupBox";
-            this.DeviceGroupBox.Size = new System.Drawing.Size(559, 119);
+            this.DeviceGroupBox.Size = new System.Drawing.Size(559, 94);
             this.DeviceGroupBox.TabIndex = 9;
             this.DeviceGroupBox.TabStop = false;
             this.DeviceGroupBox.Text = "Device Connection";
             // 
             // SettingsGroupBox
             // 
+            this.SettingsGroupBox.Controls.Add(this.MuteCheckBox);
             this.SettingsGroupBox.Controls.Add(this.MordhauOctavesRangeLabel);
             this.SettingsGroupBox.Controls.Add(this.PlusOctaveButton);
             this.SettingsGroupBox.Controls.Add(this.MinusOctaveButton);
             this.SettingsGroupBox.Location = new System.Drawing.Point(577, 9);
             this.SettingsGroupBox.Name = "SettingsGroupBox";
-            this.SettingsGroupBox.Size = new System.Drawing.Size(211, 119);
+            this.SettingsGroupBox.Size = new System.Drawing.Size(211, 94);
             this.SettingsGroupBox.TabIndex = 10;
             this.SettingsGroupBox.TabStop = false;
             this.SettingsGroupBox.Text = "Settings";
+            // 
+            // MuteCheckBox
+            // 
+            this.MuteCheckBox.AutoSize = true;
+            this.MuteCheckBox.Location = new System.Drawing.Point(9, 58);
+            this.MuteCheckBox.Name = "MuteCheckBox";
+            this.MuteCheckBox.Size = new System.Drawing.Size(177, 30);
+            this.MuteCheckBox.TabIndex = 3;
+            this.MuteCheckBox.Text = "Mute notes outside of this range\r\n(Instead of transposing them)";
+            this.MuteCheckBox.UseVisualStyleBackColor = true;
+            this.MuteCheckBox.CheckedChanged += new System.EventHandler(this.MuteCheckBox_CheckedChanged);
             // 
             // MordhauOctavesRangeLabel
             // 
@@ -168,27 +174,65 @@
             this.MinusOctaveButton.UseVisualStyleBackColor = true;
             this.MinusOctaveButton.Click += new System.EventHandler(this.MinusOctaveButton_Click);
             // 
+            // PianoControl
+            // 
+            this.PianoControl.HighNoteID = 24;
+            this.PianoControl.Location = new System.Drawing.Point(12, 134);
+            this.PianoControl.LowNoteID = 0;
+            this.PianoControl.Name = "PianoControl";
+            this.PianoControl.NoteOnColor = System.Drawing.Color.SkyBlue;
+            this.PianoControl.Size = new System.Drawing.Size(776, 92);
+            this.PianoControl.TabIndex = 0;
+            this.PianoControl.Text = "pianoControl1";
+            this.PianoControl.PianoKeyDown += new System.EventHandler<Sanford.Multimedia.Midi.UI.PianoKeyEventArgs>(this.PianoControl_PianoKeyDown);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(12, 106);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(694, 13);
+            this.label1.TabIndex = 11;
+            this.label1.Text = "To simulate a Midi input device using your computer keyboard. Please bind the key" +
+    "s on the keyboard below and select keyboard in the device list.\r\n";
+            // 
+            // KeybindLabel
+            // 
+            this.KeybindLabel.AutoSize = true;
+            this.KeybindLabel.Location = new System.Drawing.Point(12, 233);
+            this.KeybindLabel.Name = "KeybindLabel";
+            this.KeybindLabel.Size = new System.Drawing.Size(148, 13);
+            this.KeybindLabel.TabIndex = 12;
+            this.KeybindLabel.Text = "Press a key to bind the note 1";
+            // 
             // LiveInputForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 238);
+            this.ClientSize = new System.Drawing.Size(800, 250);
+            this.Controls.Add(this.KeybindLabel);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.SettingsGroupBox);
             this.Controls.Add(this.DeviceGroupBox);
             this.Controls.Add(this.PianoControl);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.KeyPreview = true;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "LiveInputForm";
             this.Text = "LiveInputForm";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.LiveInputForm_FormClosed);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.LiveInputForm_KeyDown);
             this.DeviceGroupBox.ResumeLayout(false);
             this.DeviceGroupBox.PerformLayout();
             this.SettingsGroupBox.ResumeLayout(false);
             this.SettingsGroupBox.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
+
+
 
         #endregion
 
@@ -204,5 +248,8 @@
         private System.Windows.Forms.Button PlusOctaveButton;
         private System.Windows.Forms.Button MinusOctaveButton;
         private System.Windows.Forms.Label MordhauOctavesRangeLabel;
+        private System.Windows.Forms.CheckBox MuteCheckBox;
+        private System.Windows.Forms.Label label1;
+        private Label KeybindLabel;
     }
 }
