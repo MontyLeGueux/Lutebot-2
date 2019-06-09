@@ -229,6 +229,7 @@ namespace LuteBot
         private void MusicProgressBar_Scroll(object sender, EventArgs e)
         {
             player.SetPosition(MusicProgressBar.Value);
+            StartLabel.Text = player.GetFormattedPosition();
         }
 
         private void Timer1_Tick(object sender, EventArgs e)
