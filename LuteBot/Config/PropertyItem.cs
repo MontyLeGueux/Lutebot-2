@@ -22,6 +22,7 @@
         AvaliableNoteCount,
         NoteCooldown,
         DebugMode,
+        ZeroingOnPlay,
 
         //keybinds
         Play,

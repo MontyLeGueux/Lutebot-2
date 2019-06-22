@@ -388,6 +388,9 @@ namespace LuteBot
                 }
                 if (!playButtonIsPlaying)
                 {
+                    if (ConfigManager.GetBooleanProperty(PropertyItem.ZeroingOnPlay) == true)
+                        player.SetPosition(0);
+
                     Play();
                 }
                 else

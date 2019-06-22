@@ -119,6 +119,7 @@ namespace LuteBot
             TrackSelectionCheckBox.Checked = ConfigManager.GetBooleanProperty(PropertyItem.TrackSelection);
             OnlineSyncCheckBox.Checked = ConfigManager.GetBooleanProperty(PropertyItem.OnlineSync);
             SoundEffectsCheckBox.Checked = ConfigManager.GetBooleanProperty(PropertyItem.SoundEffects);
+            ZeroingCheckBox.Checked = ConfigManager.GetBooleanProperty(PropertyItem.ZeroingOnPlay);
             InitRadioButtons();
 
             NoteConversionMode.SelectedIndex = ConfigManager.GetIntegerProperty(PropertyItem.NoteConversionMode);
@@ -247,6 +248,11 @@ namespace LuteBot
                 NewAutoConsoleRadio.Checked = false;
                 OldAutoConsoleRadio.Checked = false;
             }
+        }
+
+        private void ZeroingCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            ConfigManager.SetProperty(PropertyItem.ZeroingOnPlay, (ZeroingCheckBox.Checked.ToString()));
         }
     }
 }

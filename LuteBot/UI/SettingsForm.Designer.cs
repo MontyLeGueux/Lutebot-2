@@ -53,6 +53,7 @@
             this.NoteCountLabel = new System.Windows.Forms.Label();
             this.LowestNoteLabel = new System.Windows.Forms.Label();
             this.LowestNoteNumeric = new System.Windows.Forms.NumericUpDown();
+            this.ZeroingCheckBox = new System.Windows.Forms.CheckBox();
             this.SettingsGroupBox.SuspendLayout();
             this.AdvancedGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.NoteCooldownNumeric)).BeginInit();
@@ -180,6 +181,7 @@
             // 
             // SettingsGroupBox
             // 
+            this.SettingsGroupBox.Controls.Add(this.ZeroingCheckBox);
             this.SettingsGroupBox.Controls.Add(this.LiveMidiCheckBox);
             this.SettingsGroupBox.Controls.Add(this.OffAutoConsoleRadio);
             this.SettingsGroupBox.Controls.Add(this.AutoConsoleLabel);
@@ -339,6 +341,17 @@
             this.LowestNoteNumeric.TabIndex = 11;
             this.LowestNoteNumeric.ValueChanged += new System.EventHandler(this.LowestNoteNumeric_ValueChanged);
             // 
+            // ZeroingCheckBox
+            // 
+            this.ZeroingCheckBox.AutoSize = true;
+            this.ZeroingCheckBox.Location = new System.Drawing.Point(245, 19);
+            this.ZeroingCheckBox.Name = "ZeroingCheckBox";
+            this.ZeroingCheckBox.Size = new System.Drawing.Size(136, 17);
+            this.ZeroingCheckBox.TabIndex = 15;
+            this.ZeroingCheckBox.Text = "Set time to zero on play";
+            this.ZeroingCheckBox.UseVisualStyleBackColor = true;
+            this.ZeroingCheckBox.CheckedChanged += new System.EventHandler(this.ZeroingCheckBox_CheckedChanged);
+            // 
             // SettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -394,5 +407,6 @@
         private System.Windows.Forms.Label AutoConsoleLabel;
         private System.Windows.Forms.RadioButton OffAutoConsoleRadio;
         private System.Windows.Forms.CheckBox LiveMidiCheckBox;
+        private System.Windows.Forms.CheckBox ZeroingCheckBox;
     }
 }
