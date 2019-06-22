@@ -41,6 +41,7 @@
             this.NoteConversionMode = new System.Windows.Forms.ComboBox();
             this.NoteConversionLabel = new System.Windows.Forms.Label();
             this.SettingsGroupBox = new System.Windows.Forms.GroupBox();
+            this.ZeroingCheckBox = new System.Windows.Forms.CheckBox();
             this.LiveMidiCheckBox = new System.Windows.Forms.CheckBox();
             this.OffAutoConsoleRadio = new System.Windows.Forms.RadioButton();
             this.AutoConsoleLabel = new System.Windows.Forms.Label();
@@ -53,7 +54,6 @@
             this.NoteCountLabel = new System.Windows.Forms.Label();
             this.LowestNoteLabel = new System.Windows.Forms.Label();
             this.LowestNoteNumeric = new System.Windows.Forms.NumericUpDown();
-            this.ZeroingCheckBox = new System.Windows.Forms.CheckBox();
             this.SettingsGroupBox.SuspendLayout();
             this.AdvancedGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.NoteCooldownNumeric)).BeginInit();
@@ -108,7 +108,7 @@
             this.ReturnButton.Location = new System.Drawing.Point(10, 344);
             this.ReturnButton.Name = "ReturnButton";
             this.ReturnButton.Size = new System.Drawing.Size(120, 30);
-            this.ReturnButton.TabIndex = 4;
+            this.ReturnButton.TabIndex = 16;
             this.ReturnButton.Text = "Cancel";
             this.ReturnButton.UseVisualStyleBackColor = true;
             this.ReturnButton.Click += new System.EventHandler(this.CancelButton_Click);
@@ -118,7 +118,7 @@
             this.ApplyButton.Location = new System.Drawing.Point(277, 344);
             this.ApplyButton.Name = "ApplyButton";
             this.ApplyButton.Size = new System.Drawing.Size(120, 30);
-            this.ApplyButton.TabIndex = 5;
+            this.ApplyButton.TabIndex = 17;
             this.ApplyButton.Text = "Apply";
             this.ApplyButton.UseVisualStyleBackColor = true;
             this.ApplyButton.Click += new System.EventHandler(this.ApplyButton_Click);
@@ -129,7 +129,7 @@
             this.SoundEffectsCheckBox.Location = new System.Drawing.Point(6, 134);
             this.SoundEffectsCheckBox.Name = "SoundEffectsCheckBox";
             this.SoundEffectsCheckBox.Size = new System.Drawing.Size(92, 17);
-            this.SoundEffectsCheckBox.TabIndex = 6;
+            this.SoundEffectsCheckBox.TabIndex = 7;
             this.SoundEffectsCheckBox.Text = "Sound effects";
             this.SoundEffectsCheckBox.UseVisualStyleBackColor = true;
             this.SoundEffectsCheckBox.CheckedChanged += new System.EventHandler(this.SoundEffectsCheckBox_CheckedChanged);
@@ -140,7 +140,7 @@
             this.TrackSelectionCheckBox.Location = new System.Drawing.Point(6, 65);
             this.TrackSelectionCheckBox.Name = "TrackSelectionCheckBox";
             this.TrackSelectionCheckBox.Size = new System.Drawing.Size(213, 17);
-            this.TrackSelectionCheckBox.TabIndex = 7;
+            this.TrackSelectionCheckBox.TabIndex = 4;
             this.TrackSelectionCheckBox.Text = "Show Track Selection Menu on Startup";
             this.TrackSelectionCheckBox.UseVisualStyleBackColor = true;
             this.TrackSelectionCheckBox.CheckedChanged += new System.EventHandler(this.TrackSelectionCheckBox_CheckedChanged);
@@ -152,7 +152,7 @@
             this.OnlineSyncCheckBox.Location = new System.Drawing.Point(6, 88);
             this.OnlineSyncCheckBox.Name = "OnlineSyncCheckBox";
             this.OnlineSyncCheckBox.Size = new System.Drawing.Size(195, 17);
-            this.OnlineSyncCheckBox.TabIndex = 8;
+            this.OnlineSyncCheckBox.TabIndex = 5;
             this.OnlineSyncCheckBox.Text = "Show Online Sync Menu on Startup";
             this.OnlineSyncCheckBox.UseVisualStyleBackColor = true;
             this.OnlineSyncCheckBox.CheckedChanged += new System.EventHandler(this.OnlineSyncCheckBox_CheckedChanged);
@@ -166,7 +166,7 @@
             this.NoteConversionMode.Location = new System.Drawing.Point(172, 15);
             this.NoteConversionMode.Name = "NoteConversionMode";
             this.NoteConversionMode.Size = new System.Drawing.Size(209, 21);
-            this.NoteConversionMode.TabIndex = 9;
+            this.NoteConversionMode.TabIndex = 12;
             this.NoteConversionMode.SelectedIndexChanged += new System.EventHandler(this.NoteConversionMode_SelectedIndexChanged);
             // 
             // NoteConversionLabel
@@ -199,13 +199,24 @@
             this.SettingsGroupBox.TabStop = false;
             this.SettingsGroupBox.Text = "Settings";
             // 
+            // ZeroingCheckBox
+            // 
+            this.ZeroingCheckBox.AutoSize = true;
+            this.ZeroingCheckBox.Location = new System.Drawing.Point(245, 19);
+            this.ZeroingCheckBox.Name = "ZeroingCheckBox";
+            this.ZeroingCheckBox.Size = new System.Drawing.Size(136, 17);
+            this.ZeroingCheckBox.TabIndex = 8;
+            this.ZeroingCheckBox.Text = "Set time to zero on play";
+            this.ZeroingCheckBox.UseVisualStyleBackColor = true;
+            this.ZeroingCheckBox.CheckedChanged += new System.EventHandler(this.ZeroingCheckBox_CheckedChanged);
+            // 
             // LiveMidiCheckBox
             // 
             this.LiveMidiCheckBox.AutoSize = true;
             this.LiveMidiCheckBox.Location = new System.Drawing.Point(6, 111);
             this.LiveMidiCheckBox.Name = "LiveMidiCheckBox";
             this.LiveMidiCheckBox.Size = new System.Drawing.Size(207, 17);
-            this.LiveMidiCheckBox.TabIndex = 14;
+            this.LiveMidiCheckBox.TabIndex = 6;
             this.LiveMidiCheckBox.Text = "Show Live Midi Input Menu on Startup\r\n";
             this.LiveMidiCheckBox.UseVisualStyleBackColor = true;
             this.LiveMidiCheckBox.CheckedChanged += new System.EventHandler(this.LiveMidiCheckBox_CheckedChanged);
@@ -216,7 +227,7 @@
             this.OffAutoConsoleRadio.Location = new System.Drawing.Point(104, 171);
             this.OffAutoConsoleRadio.Name = "OffAutoConsoleRadio";
             this.OffAutoConsoleRadio.Size = new System.Drawing.Size(39, 17);
-            this.OffAutoConsoleRadio.TabIndex = 13;
+            this.OffAutoConsoleRadio.TabIndex = 11;
             this.OffAutoConsoleRadio.TabStop = true;
             this.OffAutoConsoleRadio.Text = "Off";
             this.OffAutoConsoleRadio.UseVisualStyleBackColor = true;
@@ -237,7 +248,7 @@
             this.OldAutoConsoleRadio.Location = new System.Drawing.Point(3, 171);
             this.OldAutoConsoleRadio.Name = "OldAutoConsoleRadio";
             this.OldAutoConsoleRadio.Size = new System.Drawing.Size(41, 17);
-            this.OldAutoConsoleRadio.TabIndex = 11;
+            this.OldAutoConsoleRadio.TabIndex = 9;
             this.OldAutoConsoleRadio.TabStop = true;
             this.OldAutoConsoleRadio.Text = "Old";
             this.OldAutoConsoleRadio.UseVisualStyleBackColor = true;
@@ -338,19 +349,8 @@
             0});
             this.LowestNoteNumeric.Name = "LowestNoteNumeric";
             this.LowestNoteNumeric.Size = new System.Drawing.Size(40, 20);
-            this.LowestNoteNumeric.TabIndex = 11;
+            this.LowestNoteNumeric.TabIndex = 13;
             this.LowestNoteNumeric.ValueChanged += new System.EventHandler(this.LowestNoteNumeric_ValueChanged);
-            // 
-            // ZeroingCheckBox
-            // 
-            this.ZeroingCheckBox.AutoSize = true;
-            this.ZeroingCheckBox.Location = new System.Drawing.Point(245, 19);
-            this.ZeroingCheckBox.Name = "ZeroingCheckBox";
-            this.ZeroingCheckBox.Size = new System.Drawing.Size(136, 17);
-            this.ZeroingCheckBox.TabIndex = 15;
-            this.ZeroingCheckBox.Text = "Set time to zero on play";
-            this.ZeroingCheckBox.UseVisualStyleBackColor = true;
-            this.ZeroingCheckBox.CheckedChanged += new System.EventHandler(this.ZeroingCheckBox_CheckedChanged);
             // 
             // SettingsForm
             // 
