@@ -139,14 +139,17 @@ namespace LuteBot.IO.KB
             /*
              * If the cursor is showing, it means the user is typing or doesn't have the required state to play lute.
              */
-            if (pci.flags == CURSOR_SHOWING)
-                return;
 
-            if (((Control.ModifierKeys & Keys.Control) == Keys.Control) ||
-                ((Control.ModifierKeys & Keys.Shift) == Keys.Shift) ||
-                (Control.ModifierKeys & Keys.Alt) == Keys.Alt)
-                return;
+            if (ConfigManager.GetBooleanProperty(PropertyItem.DontPlayNoteWhenRequired) == true)
+            {
+                if (pci.flags == CURSOR_SHOWING)
+                    return;
 
+                if (((Control.ModifierKeys & Keys.Control) == Keys.Control) ||
+                    ((Control.ModifierKeys & Keys.Shift) == Keys.Shift) ||
+                    (Control.ModifierKeys & Keys.Alt) == Keys.Alt)
+                    return;
+            }
 
 
             if (AutoConsoleModeFromString(ConfigManager.GetProperty(PropertyItem.ConsoleOpenMode)) == AutoConsoleMode.New)

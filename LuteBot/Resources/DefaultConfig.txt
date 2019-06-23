@@ -127,6 +127,10 @@
   {
       "Item": "ZeroingOnPlay",
       "Value": "false"
+    },
+	{
+      "Item": "DontPlayNoteWhenRequired",
+      "Value": "true"
     }
   ]
 }
