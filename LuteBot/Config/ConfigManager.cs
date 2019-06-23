@@ -20,7 +20,7 @@ namespace LuteBot.Config
     {
         private static Config configuration;
         private const string autoSavePath = @"Config\";
-		private const string configEndPath = @"Mordhau\Mordhau\Config\\DefaultInput.ini";
+		private const string configEndPath = @"Mordhau\Mordhau\Config\DefaultInput.ini";
 
 		static ConfigManager()
         {
@@ -51,7 +51,6 @@ namespace LuteBot.Config
 						if (Directory.Exists(path + "Mordhau"))
 						{
 							configuration.Set(PropertyItem.MordhauInputIniLocation, path + configEndPath);
-							MessageBox.Show(path + configEndPath);
 							break;
 						}
 					}
