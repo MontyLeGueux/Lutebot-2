@@ -123,6 +123,10 @@
 	{
       "Item": "LiveMidiListen",
       "Value": "Decimal"
+    },
+  {
+      "Item": "ZeroingOnPlay",
+      "Value": "false"
     }
   ]
 }
