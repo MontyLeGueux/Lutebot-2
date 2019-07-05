@@ -54,7 +54,7 @@
             this.NoteCountLabel = new System.Windows.Forms.Label();
             this.LowestNoteLabel = new System.Windows.Forms.Label();
             this.LowestNoteNumeric = new System.Windows.Forms.NumericUpDown();
-            this.DontPlayWhenRequiredCheckbox = new System.Windows.Forms.CheckBox();
+            this.PauseWhenRequiredCheckbox = new System.Windows.Forms.CheckBox();
             this.SettingsGroupBox.SuspendLayout();
             this.AdvancedGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.NoteCooldownNumeric)).BeginInit();
@@ -182,7 +182,7 @@
             // 
             // SettingsGroupBox
             // 
-            this.SettingsGroupBox.Controls.Add(this.DontPlayWhenRequiredCheckbox);
+            this.SettingsGroupBox.Controls.Add(this.PauseWhenRequiredCheckbox);
             this.SettingsGroupBox.Controls.Add(this.ZeroingCheckBox);
             this.SettingsGroupBox.Controls.Add(this.LiveMidiCheckBox);
             this.SettingsGroupBox.Controls.Add(this.OffAutoConsoleRadio);
@@ -354,16 +354,16 @@
             this.LowestNoteNumeric.TabIndex = 13;
             this.LowestNoteNumeric.ValueChanged += new System.EventHandler(this.LowestNoteNumeric_ValueChanged);
             // 
-            // DontPlayWhenRequiredCheckbox
+            // PauseWhenRequiredCheckbox
             // 
-            this.DontPlayWhenRequiredCheckbox.AutoSize = true;
-            this.DontPlayWhenRequiredCheckbox.Location = new System.Drawing.Point(6, 157);
-            this.DontPlayWhenRequiredCheckbox.Name = "DontPlayWhenRequiredCheckbox";
-            this.DontPlayWhenRequiredCheckbox.Size = new System.Drawing.Size(378, 17);
-            this.DontPlayWhenRequiredCheckbox.TabIndex = 8;
-            this.DontPlayWhenRequiredCheckbox.Text = "Dont play notes when a modifier key is pressed or when player is in a menu";
-            this.DontPlayWhenRequiredCheckbox.UseVisualStyleBackColor = true;
-            this.DontPlayWhenRequiredCheckbox.CheckedChanged += new System.EventHandler(this.DontPlayWhenRequiredCheckbox_CheckedChanged);
+            this.PauseWhenRequiredCheckbox.AutoSize = true;
+            this.PauseWhenRequiredCheckbox.Location = new System.Drawing.Point(6, 157);
+            this.PauseWhenRequiredCheckbox.Name = "PauseWhenRequiredCheckbox";
+            this.PauseWhenRequiredCheckbox.Size = new System.Drawing.Size(378, 17);
+            this.PauseWhenRequiredCheckbox.TabIndex = 8;
+            this.PauseWhenRequiredCheckbox.Text = "Pause when a modifier key is pressed or when player is in a menu";
+            this.PauseWhenRequiredCheckbox.UseVisualStyleBackColor = true;
+            this.PauseWhenRequiredCheckbox.CheckedChanged += new System.EventHandler(this.PauseWhenRequiredCheckbox_CheckedChanged);
             // 
             // SettingsForm
             // 
@@ -421,6 +421,6 @@
         private System.Windows.Forms.RadioButton OffAutoConsoleRadio;
         private System.Windows.Forms.CheckBox LiveMidiCheckBox;
         private System.Windows.Forms.CheckBox ZeroingCheckBox;
-        private System.Windows.Forms.CheckBox DontPlayWhenRequiredCheckbox;
+        private System.Windows.Forms.CheckBox PauseWhenRequiredCheckbox;
     }
 }

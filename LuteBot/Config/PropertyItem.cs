@@ -23,7 +23,7 @@
         NoteCooldown,
         DebugMode,
         ZeroingOnPlay,
-        DontPlayNoteWhenRequired,
+        PauseWhenRequired,
 
         //keybinds
         Play,

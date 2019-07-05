@@ -120,7 +120,7 @@ namespace LuteBot
             OnlineSyncCheckBox.Checked = ConfigManager.GetBooleanProperty(PropertyItem.OnlineSync);
             SoundEffectsCheckBox.Checked = ConfigManager.GetBooleanProperty(PropertyItem.SoundEffects);
             ZeroingCheckBox.Checked = ConfigManager.GetBooleanProperty(PropertyItem.ZeroingOnPlay);
-            DontPlayWhenRequiredCheckbox.Checked = ConfigManager.GetBooleanProperty(PropertyItem.DontPlayNoteWhenRequired);
+            PauseWhenRequiredCheckbox.Checked = ConfigManager.GetBooleanProperty(PropertyItem.PauseWhenRequired);
             InitRadioButtons();
 
             NoteConversionMode.SelectedIndex = ConfigManager.GetIntegerProperty(PropertyItem.NoteConversionMode);
@@ -256,9 +256,9 @@ namespace LuteBot
             ConfigManager.SetProperty(PropertyItem.ZeroingOnPlay, (ZeroingCheckBox.Checked.ToString()));
         }
 
-        private void DontPlayWhenRequiredCheckbox_CheckedChanged(object sender, EventArgs e)
+        private void PauseWhenRequiredCheckbox_CheckedChanged(object sender, EventArgs e)
         {
-            ConfigManager.SetProperty(PropertyItem.DontPlayNoteWhenRequired, (DontPlayWhenRequiredCheckbox.Checked.ToString()));
+            ConfigManager.SetProperty(PropertyItem.PauseWhenRequired, (PauseWhenRequiredCheckbox.Checked.ToString()));
         }
     }
 }
