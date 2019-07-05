@@ -132,13 +132,11 @@ namespace LuteBot.IO.KB
             pci.cbSize = Marshal.SizeOf(typeof(CURSORINFO));
             GetCursorInfo(ref pci); // it stores the cursordata to the struct
 
-
-
             /*
              * If the cursor is showing, it means the user is typing or doesn't have the required state to play lute.
              */
 
-            if (ConfigManager.GetBooleanProperty(PropertyItem.DontPlayNoteWhenRequired) == true)
+            if (ConfigManager.GetBooleanProperty(PropertyItem.PauseWhenRequired) == true)
             {
                 if (pci.flags == CURSOR_SHOWING)
                 {
