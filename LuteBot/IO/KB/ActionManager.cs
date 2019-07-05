@@ -131,17 +131,28 @@ namespace LuteBot.IO.KB
             CURSORINFO pci = new CURSORINFO();
             pci.cbSize = Marshal.SizeOf(typeof(CURSORINFO));
             GetCursorInfo(ref pci); // it stores the cursordata to the struct
-
-            /*
-             * If the cursor is showing, it means the user is typing or doesn't have the required state to play lute.
-             */
-
             if (ConfigManager.GetBooleanProperty(PropertyItem.PauseWhenRequired) == true)
             {
+                /*
+                 * If the cursor is showing, it has 2 possibilities:
+                 * 
+                 * 1. Console is still up from previously sent note
+                 * 2. User initiated action (e.g., typing, menu)
+                 * 
+                 * To avoid case 1, we check again after brief timeout to give console enough time to close;
+                 * if the cursor is still up, we know with high confidence it's case 2.
+                 */
                 if (pci.flags == CURSOR_SHOWING)
                 {
-                    PauseFromGameEvent(null, EventArgs.Empty);
-                    return;
+                    Thread.Sleep(20);
+                    CURSORINFO pci_1 = new CURSORINFO();
+                    pci_1.cbSize = Marshal.SizeOf(typeof(CURSORINFO));
+                    GetCursorInfo(ref pci_1); // it stores the cursordata to the struct
+                    if (pci_1.flags == CURSOR_SHOWING)
+                    {
+                        PauseFromGameEvent(null, EventArgs.Empty);
+                        return;
+                    }
                 }
 
                 if (((Control.ModifierKeys & Keys.Control) == Keys.Control) ||
