@@ -86,6 +86,7 @@ namespace LuteBot
             trackSelectionManager.ToggleTrackRequest += new EventHandler<TrackItem>(ToggleTrack);
             liveMidiManager = new LiveMidiManager();
             hotkeyManager.LiveInputManager = liveMidiManager;
+            ActionManager.PauseFromGameEvent += PauseFromGame;
 
             PlayButton.Enabled = false;
             StopButton.Enabled = false;
@@ -406,7 +407,11 @@ namespace LuteBot
             {
                 ActionManager.ToggleConsole(true);
             }
-            PlayButton.Text = playButtonStopString;
+            // needs to be wrapped to avoid cross-thread issue
+            PlayButton.BeginInvoke(new MethodInvoker(() =>
+            {
+                PlayButton.Text = playButtonStopString;
+            }));
             player.Play();
             timer1.Start();
             playButtonIsPlaying = true;
@@ -418,7 +423,11 @@ namespace LuteBot
             {
                 ActionManager.ToggleConsole(false);
             }
-            PlayButton.Text = playButtonStartString;
+            // needs to be wrapped to avoid cross-thread issue
+            PlayButton.BeginInvoke(new MethodInvoker(() =>
+            {
+                PlayButton.Text = playButtonStartString;
+            }));
             player.Pause();
             timer1.Stop();
             playButtonIsPlaying = false;
@@ -509,6 +518,12 @@ namespace LuteBot
                 trackSelectionForm.Left = coords.X;
             }
         }
+
+        private void PauseFromGame(object sender, EventArgs e)
+        {
+            Pause();
+        }
+
 
         private static IntPtr SetHook(LowLevelKeyboardProc proc)
         {

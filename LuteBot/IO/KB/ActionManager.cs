@@ -117,12 +117,10 @@ namespace LuteBot.IO.KB
         private static extern IntPtr GetForegroundWindow();
         #endregion
 
-
-
+        public static event EventHandler PauseFromGameEvent = delegate { };
 
         private static void InputCommand(int noteId)
         {
-           
             Process[] processes = Process.GetProcessesByName("Mordhau-Win64-Shipping"); // i refresh it on each call because it may get closed or rebooted etc
             if (processes.Length != 1) // if there is no game detected then fuck off
                 return;
@@ -143,12 +141,18 @@ namespace LuteBot.IO.KB
             if (ConfigManager.GetBooleanProperty(PropertyItem.DontPlayNoteWhenRequired) == true)
             {
                 if (pci.flags == CURSOR_SHOWING)
+                {
+                    PauseFromGameEvent(null, EventArgs.Empty);
                     return;
+                }
 
                 if (((Control.ModifierKeys & Keys.Control) == Keys.Control) ||
                     ((Control.ModifierKeys & Keys.Shift) == Keys.Shift) ||
                     (Control.ModifierKeys & Keys.Alt) == Keys.Alt)
+                {
+                    PauseFromGameEvent(null, EventArgs.Empty);
                     return;
+                }
             }
 
 
