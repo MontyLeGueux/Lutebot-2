@@ -28,6 +28,7 @@
         Next,
         Previous,
         Ready,
+        ToggleOverlay,
         OpenConsole,
 
         //misc

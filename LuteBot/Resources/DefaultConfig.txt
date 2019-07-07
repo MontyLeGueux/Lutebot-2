@@ -68,6 +68,10 @@
       "Item": "Ready",
       "Value": "Substract"
     },
+	{
+	  "Item": "ToggleOverlay",
+      "Value": "PageUp"
+	},
     {
       "Item": "OpenConsole",
       "Value": "Next"

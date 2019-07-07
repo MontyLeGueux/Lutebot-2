@@ -19,6 +19,7 @@ namespace LuteBot.IO.KB
         public event EventHandler PlayKeyPressed;
         public event EventHandler NextKeyPressed;
         public event EventHandler PreviousKeyPressed;
+        public event EventHandler OverlayKeyPressed;
         public event EventHandler ConsoleKeyPressed;
         public event EventHandler ReadyPressed;
 
@@ -43,6 +44,12 @@ namespace LuteBot.IO.KB
                 if (performedAction == PropertyItem.Previous)
                 {
                     EventHandler handler = PreviousKeyPressed;
+                    handler?.Invoke(this, null);
+                }
+                else
+                if (performedAction == PropertyItem.ToggleOverlay)
+                {
+                    EventHandler handler = OverlayKeyPressed;
                     handler?.Invoke(this, null);
                 }
                 else
