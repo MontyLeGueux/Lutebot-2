@@ -24,6 +24,11 @@ namespace LuteBot.UI
 
         private string octavesCovered = "Octaves covered by mordhau [first] to [last]";
 
+        public event EventHandler LiveInputModeEvent = delegate { };
+        public event EventHandler LiveInputModeExitEvent = delegate { };
+        public event EventHandler LiveInputOnEvent = delegate { };
+        public event EventHandler LiveInputOffEvent = delegate { };
+
         public LiveInputForm(LiveMidiManager liveMidiManager)
         {
             InitializeComponent();
@@ -47,17 +52,24 @@ namespace LuteBot.UI
             InitPiano();
         }
 
+        private void LiveInputForm_Load(object sender, EventArgs e)
+        {
+            LiveInputModeEvent(null, EventArgs.Empty);
+        }
+
         private void RefreshListeningButton(object sender, EventArgs e)
         {
             if (!liveInputManager.Recording)
             {
                 OnOffButton.Text = "Off";
                 OnOffButton.BackColor = Color.FromArgb(255, 128, 128);
+                LiveInputOffEvent(null, EventArgs.Empty);
             }
             else
             {
                 OnOffButton.Text = "On";
                 OnOffButton.BackColor = Color.FromArgb(128, 255, 128);
+                LiveInputOnEvent(null, EventArgs.Empty);
             }
         }
 
@@ -201,6 +213,8 @@ namespace LuteBot.UI
             ConfigManager.SetProperty(PropertyItem.LastMidiLowBoundUsed, liveInputManager.OutDevice.LowNoteId.ToString());
             liveInputManager.Dispose();
             ConfigManager.SaveConfig();
+
+            LiveInputModeExitEvent(null, EventArgs.Empty);
         }
 
         private void MinusOctaveButton_Click(object sender, EventArgs e)
