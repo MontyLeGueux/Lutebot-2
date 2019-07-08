@@ -13,6 +13,7 @@ namespace LuteBot.IO.KB
         Next = PropertyItem.Next,
         Previous = PropertyItem.Previous,
         Ready = PropertyItem.Ready,
+        ToggleOverlay = PropertyItem.ToggleOverlay,
         OpenConsole = PropertyItem.OpenConsole,
         LiveMidiListen = PropertyItem.LiveMidiListen
     }

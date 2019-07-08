@@ -93,6 +93,12 @@
     <Compile Include="UI\KeyBindingForm.Designer.cs">
       <DependentUpon>KeyBindingForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\OverlayForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\OverlayForm.Designer.cs">
+      <DependentUpon>OverlayForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\Utils\KeyHandler.cs" />
     <Compile Include="UI\LiveInputForm.cs">
       <SubType>Form</SubType>
@@ -151,6 +157,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\OnlineSyncForm.resx">
       <DependentUpon>OnlineSyncForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\OverlayForm.resx">
+      <DependentUpon>OverlayForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\PlayListForm.resx">
       <DependentUpon>PlayListForm.cs</DependentUpon>
