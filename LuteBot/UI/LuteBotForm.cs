@@ -46,6 +46,7 @@ namespace LuteBot
         SoundBoardForm soundBoardForm;
         PlayListForm playListForm;
         LiveInputForm liveInputForm;
+        OverlayForm overlayForm;
 
         Player player;
 
@@ -64,8 +65,6 @@ namespace LuteBot
         static OnlineSyncManager onlineManager;
         static LiveMidiManager liveMidiManager;
 
-        bool closing = false;
-
         public LuteBotForm()
         {
             InitializeComponent();
@@ -82,6 +81,7 @@ namespace LuteBot
             hotkeyManager.NextKeyPressed += new EventHandler(NextButton_Click);
             hotkeyManager.PlayKeyPressed += new EventHandler(PlayButton_Click);
             hotkeyManager.PreviousKeyPressed += new EventHandler(PreviousButton_Click);
+            hotkeyManager.OverlayKeyPressed += new EventHandler(ToggleOverlay);
             trackSelectionManager.OutDeviceResetRequest += new EventHandler(ResetDevice);
             trackSelectionManager.ToggleTrackRequest += new EventHandler<TrackItem>(ToggleTrack);
             liveMidiManager = new LiveMidiManager();
@@ -92,6 +92,8 @@ namespace LuteBot
             PreviousButton.Enabled = false;
             NextButton.Enabled = false;
             MusicProgressBar.Enabled = false;
+
+            overlayForm = new OverlayForm();
 
             _hookID = SetHook(_proc);
             OpenDialogs();
@@ -116,6 +118,8 @@ namespace LuteBot
                     MidiPlayer midiPlayer = player as MidiPlayer;
                     trackSelectionManager.LoadTracks(midiPlayer.GetMidiChannels(), midiPlayer.GetMidiTracks());
                     trackSelectionManager.FileName = currentTrackName;
+                    overlayForm.Song = currentTrackName;
+                    overlayForm.Refresh();
                 }
 
                 if (trackSelectionManager.autoLoadProfile)
@@ -286,9 +290,13 @@ namespace LuteBot
             {
                 liveInputForm = new LiveInputForm(liveMidiManager);
                 Point coords = WindowPositionUtils.CheckPosition(ConfigManager.GetCoordsProperty(PropertyItem.LiveMidiPos));
-                liveInputForm.Show();
                 liveInputForm.Top = coords.Y;
                 liveInputForm.Left = coords.X;
+                liveInputForm.LiveInputModeEvent += new EventHandler(LiveInputModeHandler);
+                liveInputForm.LiveInputModeExitEvent += new EventHandler(LiveInputModeExitHandler);
+                liveInputForm.LiveInputOnEvent += new EventHandler(LiveInputOnHandler);
+                liveInputForm.LiveInputOffEvent += new EventHandler(LiveInputOffHandler);
+                liveInputForm.Show();
             }
         }
 
@@ -324,6 +332,10 @@ namespace LuteBot
             if (trackSelectionForm != null)
             {
                 trackSelectionForm.Close();
+            }
+            if (overlayForm != null)
+            {
+                overlayForm.Close();
             }
             if (liveInputForm != null)
             {
@@ -366,12 +378,16 @@ namespace LuteBot
         {
             player.LoadFile(item.Path);
             currentTrackName = item.Name;
+            overlayForm.Song = item.Name;
+            overlayForm.Refresh();
         }
 
         private void LoadHelper(SoundBoardItem item)
         {
             player.LoadFile(item.Path);
             currentTrackName = item.Name;
+            overlayForm.Song = item.Name;
+            overlayForm.Refresh();
         }
 
         private void PlayButton_Click(object sender, EventArgs e)
@@ -407,6 +423,8 @@ namespace LuteBot
             player.Play();
             timer1.Start();
             playButtonIsPlaying = true;
+            overlayForm.State = "play";
+            overlayForm.Refresh();
         }
 
         private void Pause()
@@ -419,6 +437,37 @@ namespace LuteBot
             player.Pause();
             timer1.Stop();
             playButtonIsPlaying = false;
+            overlayForm.State = "pause";
+            overlayForm.Refresh();
+        }
+
+        private void ToggleOverlay(object sender, EventArgs e)
+        {
+            overlayForm.Toggle();
+        }
+
+        private void LiveInputModeHandler(object sender, EventArgs e)
+        {
+            overlayForm.State = "live-input-mode";
+            overlayForm.Refresh();
+        }
+
+        private void LiveInputModeExitHandler(object sender, EventArgs e)
+        {
+            overlayForm.State = "pending";
+            overlayForm.Refresh();
+        }
+
+        private void LiveInputOnHandler(object sender, EventArgs e)
+        {
+            overlayForm.State = "live-input-on";
+            overlayForm.Refresh();
+        }
+
+        private void LiveInputOffHandler(object sender, EventArgs e)
+        {
+            overlayForm.State = "live-input-off";
+            overlayForm.Refresh();
         }
 
         private void PlayListToolStripMenuItem_Click(object sender, EventArgs e)
@@ -461,6 +510,8 @@ namespace LuteBot
             CurrentMusicLabel.Text = "";
             playButtonIsPlaying = false;
             PlayButton.Text = playButtonStartString;
+            overlayForm.State = "stop";
+            overlayForm.Refresh();
         }
 
         private void NextButton_Click(object sender, EventArgs e)
@@ -539,9 +590,13 @@ namespace LuteBot
             {
                 liveInputForm = new LiveInputForm(liveMidiManager);
                 Point coords = WindowPositionUtils.CheckPosition(ConfigManager.GetCoordsProperty(PropertyItem.LiveMidiPos));
-                liveInputForm.Show();
                 liveInputForm.Top = coords.Y;
                 liveInputForm.Left = coords.X;
+                liveInputForm.LiveInputModeEvent += new EventHandler(LiveInputModeHandler);
+                liveInputForm.LiveInputModeExitEvent += new EventHandler(LiveInputModeExitHandler);
+                liveInputForm.LiveInputOnEvent += new EventHandler(LiveInputOnHandler);
+                liveInputForm.LiveInputOffEvent += new EventHandler(LiveInputOffHandler);
+                liveInputForm.Show();
             }
         }
     }
