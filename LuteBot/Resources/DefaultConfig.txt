@@ -129,7 +129,7 @@
       "Value": "false"
     },
 	{
-      "Item": "PauseWhenRequired",
+      "Item": "DontPlayNoteWhenRequired",
       "Value": "true"
     }
   ]

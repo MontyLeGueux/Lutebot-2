@@ -117,10 +117,12 @@ namespace LuteBot.IO.KB
         private static extern IntPtr GetForegroundWindow();
         #endregion
 
-        public static event EventHandler PauseFromGameEvent = delegate { };
+
+
 
         private static void InputCommand(int noteId)
         {
+           
             Process[] processes = Process.GetProcessesByName("Mordhau-Win64-Shipping"); // i refresh it on each call because it may get closed or rebooted etc
             if (processes.Length != 1) // if there is no game detected then fuck off
                 return;
@@ -128,46 +130,25 @@ namespace LuteBot.IO.KB
             if (winhandle != GetForegroundWindow()) // if the game has no focus, then fuck off
                 return;
 
-            /*
-             * If the cursor is showing, it has 2 possibilities:
-             * 
-             * 1. Console is still up from previously sent note
-             * 2. User initiated action (e.g., typing, menu)
-             * 
-             * To avoid case 1, we check again after brief timeout to give console enough time to close;
-             * if the cursor is still up, we know with high confidence it's case 2.
-             */
-
             CURSORINFO pci = new CURSORINFO();
             pci.cbSize = Marshal.SizeOf(typeof(CURSORINFO));
             GetCursorInfo(ref pci); // it stores the cursordata to the struct
 
-            if (pci.flags == CURSOR_SHOWING)
-            {
-                Thread.Sleep(20);
-                // refetch cursor info
-                CURSORINFO pci_1 = new CURSORINFO();
-                pci_1.cbSize = Marshal.SizeOf(typeof(CURSORINFO));
-                GetCursorInfo(ref pci_1);
-                if (pci_1.flags == CURSOR_SHOWING)
-                {
-                    if (ConfigManager.GetBooleanProperty(PropertyItem.PauseWhenRequired) == true)
-                    {
-                        PauseFromGameEvent(null, EventArgs.Empty);
-                    }
-                    return;
-                }
-            }
 
-            if (((Control.ModifierKeys & Keys.Control) == Keys.Control) ||
-                ((Control.ModifierKeys & Keys.Shift) == Keys.Shift) ||
-                (Control.ModifierKeys & Keys.Alt) == Keys.Alt)
+
+            /*
+             * If the cursor is showing, it means the user is typing or doesn't have the required state to play lute.
+             */
+
+            if (ConfigManager.GetBooleanProperty(PropertyItem.DontPlayNoteWhenRequired) == true)
             {
-                if (ConfigManager.GetBooleanProperty(PropertyItem.PauseWhenRequired) == true)
-                {
-                    PauseFromGameEvent(null, EventArgs.Empty);
-                }
-                return;
+                if (pci.flags == CURSOR_SHOWING)
+                    return;
+
+                if (((Control.ModifierKeys & Keys.Control) == Keys.Control) ||
+                    ((Control.ModifierKeys & Keys.Shift) == Keys.Shift) ||
+                    (Control.ModifierKeys & Keys.Alt) == Keys.Alt)
+                    return;
             }
 
 
