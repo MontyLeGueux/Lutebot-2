@@ -115,7 +115,14 @@ namespace LuteBot.Core.Midi
 
         public override void LoadFile(string filename)
         {
-            sequence.LoadAsync(filename);
+			try
+			{
+				sequence.LoadAsync(filename);
+			}
+			catch
+			{
+				//ghetto fix
+			}
         }
 
         public override void Stop()
