@@ -7,4 +7,4 @@ Lutebot rework
 
 * Contains crash fixes
 * [OPTION] Play button set time to zero
-* You can press controller keys (ctrl/alt/tab) without fucking up your game
+* You can press controller keys (ctrl/alt/tab) and type in chat without fucking up your game
