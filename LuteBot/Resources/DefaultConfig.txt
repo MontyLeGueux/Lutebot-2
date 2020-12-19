@@ -26,7 +26,7 @@
     },
     {
       "Item": "SoundEffects",
-      "Value": "True"
+      "Value": "False"
     },
     {
       "Item": "ConsoleOpenMode",
@@ -123,6 +123,14 @@
 	{
       "Item": "LiveMidiListen",
       "Value": "Decimal"
+    },
+  {
+      "Item": "ZeroingOnPlay",
+      "Value": "false"
+    },
+	{
+      "Item": "DontPlayNoteWhenRequired",
+      "Value": "true"
     }
   ]
 }

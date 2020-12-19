@@ -198,7 +198,7 @@ namespace LuteBot
             this.PreviousButton.Location = new System.Drawing.Point(12, 129);
             this.PreviousButton.Name = "PreviousButton";
             this.PreviousButton.Size = new System.Drawing.Size(75, 23);
-            this.PreviousButton.TabIndex = 5;
+            this.PreviousButton.TabIndex = 1;
             this.PreviousButton.Text = "Previous";
             this.PreviousButton.UseVisualStyleBackColor = true;
             this.PreviousButton.Click += new System.EventHandler(this.PreviousButton_Click);
@@ -208,7 +208,7 @@ namespace LuteBot
             this.StopButton.Location = new System.Drawing.Point(93, 128);
             this.StopButton.Name = "StopButton";
             this.StopButton.Size = new System.Drawing.Size(75, 23);
-            this.StopButton.TabIndex = 6;
+            this.StopButton.TabIndex = 2;
             this.StopButton.Text = "Stop";
             this.StopButton.UseVisualStyleBackColor = true;
             this.StopButton.Click += new System.EventHandler(this.StopButton_Click);
@@ -218,7 +218,7 @@ namespace LuteBot
             this.PlayButton.Location = new System.Drawing.Point(294, 128);
             this.PlayButton.Name = "PlayButton";
             this.PlayButton.Size = new System.Drawing.Size(75, 23);
-            this.PlayButton.TabIndex = 7;
+            this.PlayButton.TabIndex = 4;
             this.PlayButton.Text = "Play";
             this.PlayButton.UseVisualStyleBackColor = true;
             this.PlayButton.Click += new System.EventHandler(this.PlayButton_Click);
@@ -228,7 +228,7 @@ namespace LuteBot
             this.NextButton.Location = new System.Drawing.Point(375, 128);
             this.NextButton.Name = "NextButton";
             this.NextButton.Size = new System.Drawing.Size(75, 23);
-            this.NextButton.TabIndex = 8;
+            this.NextButton.TabIndex = 5;
             this.NextButton.Text = "Next";
             this.NextButton.UseVisualStyleBackColor = true;
             this.NextButton.Click += new System.EventHandler(this.NextButton_Click);
@@ -243,7 +243,7 @@ namespace LuteBot
             this.LoadFileButton.Location = new System.Drawing.Point(175, 128);
             this.LoadFileButton.Name = "LoadFileButton";
             this.LoadFileButton.Size = new System.Drawing.Size(113, 23);
-            this.LoadFileButton.TabIndex = 9;
+            this.LoadFileButton.TabIndex = 3;
             this.LoadFileButton.Text = "Load Midi File";
             this.LoadFileButton.UseVisualStyleBackColor = true;
             this.LoadFileButton.Click += new System.EventHandler(this.LoadFileButton_Click);
