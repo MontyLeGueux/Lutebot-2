@@ -13,7 +13,7 @@ namespace LuteBot.Core
     public class MordhauOutDevice
     {
         private int lowNoteId = 0;
-        private int highNoteId = 24;
+        private int highNoteId = 60;
 
         private int lowMidiNoteId = 0;
         private int highMidiNoteId = 127;
@@ -47,8 +47,8 @@ namespace LuteBot.Core
             {
                 lowNoteId = ((noteRange / 2) + lowMidiNoteId) - (luteRange / 2);
                 highNoteId = ((noteRange / 2) + lowMidiNoteId) + (luteRange / 2);
-                lowNoteId = lowNoteId - (lowNoteId % 12);
-                highNoteId = highNoteId - (highNoteId % 12) - 1;
+                lowNoteId = lowNoteId - (lowNoteId % 30);
+                highNoteId = highNoteId - (highNoteId % 30) - 1;
                 conversionNeeded = true;
             }
             else
@@ -84,14 +84,14 @@ namespace LuteBot.Core
                 int velocity = message.Data2;
                 if (oldData1 < lowNoteId)
                 {
-                    newData1 = lowNoteId + (oldData1 % 12);
+                    newData1 = lowNoteId + (oldData1 % 30);
                     outOfRange = true;
                 }
                 else
                 {
                     if (oldData1 > highNoteId)
                     {
-                        newData1 = (highNoteId - 11) + (oldData1 % 12);
+                        newData1 = (highNoteId - 11) + (oldData1 % 30);
                         outOfRange = true;
                     }
                     else

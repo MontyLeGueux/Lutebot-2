@@ -176,7 +176,7 @@ namespace LuteBot.UI
             // 
             // PianoControl
             // 
-            this.PianoControl.HighNoteID = 24;
+            this.PianoControl.HighNoteID = 60;
             this.PianoControl.Location = new System.Drawing.Point(12, 134);
             this.PianoControl.LowNoteID = 0;
             this.PianoControl.Name = "PianoControl";

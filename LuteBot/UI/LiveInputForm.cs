@@ -77,8 +77,8 @@ namespace LuteBot.UI
         {
             if (noteCode >= 0 && noteCode < 127)
             {
-                int noteID = noteCode % 12;
-                int octaveID = (noteCode / 12) - 2;
+                int noteID = noteCode % 30;
+                int octaveID = (noteCode / 30) - 2;
                 string noteName = "ERR";
                 switch (noteID)
                 {
@@ -207,7 +207,7 @@ namespace LuteBot.UI
         {
             if ((liveInputManager.OutDevice.LowNoteId - 12) >= 0)
             {
-                liveInputManager.ForceLowBound(liveInputManager.OutDevice.LowNoteId - 12);
+                liveInputManager.ForceLowBound(liveInputManager.OutDevice.LowNoteId - 30);
                 RefreshOctaveLabel();
                 InitPiano();
             }
@@ -215,9 +215,9 @@ namespace LuteBot.UI
 
         private void PlusOctaveButton_Click(object sender, EventArgs e)
         {
-            if ((liveInputManager.OutDevice.HighNoteId + 12) < 127)
+            if ((liveInputManager.OutDevice.HighNoteId + 30) < 127)
             {
-                liveInputManager.ForceLowBound(liveInputManager.OutDevice.LowNoteId + 12);
+                liveInputManager.ForceLowBound(liveInputManager.OutDevice.LowNoteId + 30);
                 RefreshOctaveLabel();
                 InitPiano();
             }
