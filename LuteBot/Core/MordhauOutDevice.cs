@@ -12,7 +12,7 @@ namespace LuteBot.Core
 {
     public class MordhauOutDevice
     {
-        private int lowNoteId = 0;
+        private int lowNoteId = 1;
         private int highNoteId = 60;
 
         private int lowMidiNoteId = 0;
@@ -41,74 +41,38 @@ namespace LuteBot.Core
 
         private void UpdateNoteIdBounds()
         {
-            int noteRange = highMidiNoteId - lowMidiNoteId;
-            int luteRange = ConfigManager.GetIntegerProperty(PropertyItem.AvaliableNoteCount);
-            if (noteRange > luteRange)
-            {
-                lowNoteId = ((noteRange / 2) + lowMidiNoteId) - (luteRange / 2);
-                highNoteId = ((noteRange / 2) + lowMidiNoteId) + (luteRange / 2);
-                lowNoteId = lowNoteId - (lowNoteId % 30);
-                highNoteId = highNoteId - (highNoteId % 30) - 1;
-                conversionNeeded = true;
-            }
-            else
-            {
-                conversionNeeded = false;
-                //if the note range of the midi is lower than the lute range
-                lowNoteId = lowMidiNoteId;
-                highNoteId = highMidiNoteId;
-            }
+            
         }
 
         private void ForceNoteBounds(int value, bool isLower)
         {
-            if (isLower)
-            {
-                lowNoteId = value;
-                highNoteId = value + ConfigManager.GetIntegerProperty(PropertyItem.AvaliableNoteCount) - 1;
-            }
-            else
-            {
-                highNoteId = value;
-                lowNoteId = value - ConfigManager.GetIntegerProperty(PropertyItem.AvaliableNoteCount) - 1;
-            }
+           
         }
+
+
 
         public ChannelMessage FilterNote(ChannelMessage message)
         {
-            if (conversionNeeded && (message.Command == ChannelCommand.NoteOn || message.Command == ChannelCommand.NoteOff))
-            {
-                bool outOfRange = false;
-                int newData1 = 0;
-                int oldData1 = message.Data1;
-                int velocity = message.Data2;
-                if (oldData1 < lowNoteId)
-                {
-                    newData1 = lowNoteId + (oldData1 % 30);
-                    outOfRange = true;
-                }
-                else
-                {
-                    if (oldData1 > highNoteId)
-                    {
-                        newData1 = (highNoteId - 11) + (oldData1 % 30);
-                        outOfRange = true;
-                    }
-                    else
-                    {
-                        newData1 = oldData1;
-                    }
-                }
-                if (outOfRange && muteOutOfRange)
-                {
-                    velocity = 0;
-                }
-                return new ChannelMessage(message.Command, message.MidiChannel, newData1, velocity);
-            }
-            else
-            {
-                return message;
-            }
+     
+        
+            int oldData1 = message.Data1;
+            int velocity = message.Data2;
+            Console.WriteLine(oldData1.ToString());
+
+            float x = oldData1;
+            float x1 = 36;
+            float x2 = 96;
+            float y1 = 1;
+            float y2 = 60;
+
+            var m = (y2 - y1) / (x2 - x1);
+            float c = y1 - m * x1;
+
+            int _out =(int)( m * (float)(x) + c);
+
+
+            return new ChannelMessage(message.Command, message.MidiChannel, _out, velocity);
+
         }
 
         public void SendNote(ChannelMessage message)

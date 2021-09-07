@@ -178,7 +178,7 @@ namespace LuteBot.UI
             // 
             this.PianoControl.HighNoteID = 60;
             this.PianoControl.Location = new System.Drawing.Point(12, 134);
-            this.PianoControl.LowNoteID = 0;
+            this.PianoControl.LowNoteID = 1;
             this.PianoControl.Name = "PianoControl";
             this.PianoControl.NoteOnColor = System.Drawing.Color.SkyBlue;
             this.PianoControl.Size = new System.Drawing.Size(776, 92);
